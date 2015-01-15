@@ -8,7 +8,7 @@
 *                                                           *
 * JINST 2:P09005 (2007)                                     *
 *      X Rouby, J de Favereau, K Piotrzkowski (CP3)         *
-*       http://www.fynu.ucl.ac.be/hector.html               *
+*       http://bit.ly/1IBluZr                               *
 *                                                           *
 * Center for Cosmology, Particle Physics and Phenomenology  *
 *              Universite catholique de Louvain             *
@@ -36,10 +36,8 @@ Tested environments :
 Note :
 	On Fedora (using SELinux security system), if you experience some problems at 
         ROOT startup, concerning libHector_routines.so, i.e. :
-		dlopen error: /home/rouby/GGamma/Hector/./lib/libHector.so: cannot 
-		restore segment prot after reloc: Permission denied
-		Load Error: Failed to load Dynamic link library 
-		/home/rouby/GGamma/Hector/./lib/libHector.so
+		dlopen error: /home/rouby/GGamma/Hector/./lib/libHector.so: cannot restore segment prot after reloc: Permission denied
+		Load Error: Failed to load Dynamic link library /home/rouby/GGamma/Hector/./lib/libHector.so
 	Then you should try this :
           chcon -t textrel_shlib_t /home/rouby/GGamma/Hector/lib/libHector_routines.so
 
