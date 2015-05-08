@@ -20,7 +20,7 @@
 hector_devel@cp3.phys.ucl.ac.be 
 jerome.defavereau@uclouvain.be 
 xavier.rouby@cern.ch
-
+laurent.forthomme@cern.ch
 
 Requirements:
 	- ROOT 4.xx or later, recent g++ (not tested before 3.2.xx)
@@ -41,7 +41,11 @@ Note :
 	Then you should try this :
           chcon -t textrel_shlib_t /home/rouby/GGamma/Hector/lib/libHector_routines.so
 
-** Version 1.5.2  (17/02/2009) -- not yet released
+** Version 1.5.3 (08/05/2015)
+	Beam initial energy is now an argument to provide to the H_BeamLine object (i.e. not hardcoded anymore, apart from
+	its default value, BE_DEF = 7000 GeV, as defined in H_Parameters.h)
+
+** Version 1.5.2  (17/02/2009)
 	switched all calls to "static const float pi" to TMath::Pi() 
 	operator= in H_BeamLine.cc corrected
 	Makefile : -fPIC option added in ROOTCFLAGS variable
