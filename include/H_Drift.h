@@ -31,9 +31,9 @@ class H_Drift : public H_OpticalElement {
 	public:
 	/// Constructors and destructor
 	//@{
-		H_Drift():H_OpticalElement(DRIFT,0.,0.,0.) {init();}
-        	H_Drift(const double s, const double l):H_OpticalElement(DRIFT,s,0.,l){init();}
-	        H_Drift(const string& nameE, const double s, const double l):H_OpticalElement(nameE,DRIFT,s,0.,l){init();}
+		H_Drift():H_OpticalElement(DRIFT,0.,0.,0.,BE_DEF) {init();}
+        	H_Drift(const double s, const double l, const float eini):H_OpticalElement(DRIFT,s,0.,l,eini){init();}
+	        H_Drift(const string& nameE, const double s, const double l, const float eini):H_OpticalElement(nameE,DRIFT,s,0.,l,eini){init();}
 	        ~H_Drift() { };
 	//@}
 	        void init();

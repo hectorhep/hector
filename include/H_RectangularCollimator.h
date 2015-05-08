@@ -32,8 +32,8 @@ class H_RectangularCollimator : public H_Drift {
 	/// Constructors and destructor
 	//@{
 		H_RectangularCollimator():H_Drift() {type = RCOLLIMATOR; init();}
-		H_RectangularCollimator(const double, const double );
-		H_RectangularCollimator(const string&, const double, const double );
+		H_RectangularCollimator(const double, const double, const float);
+		H_RectangularCollimator(const string&, const double, const double, const float);
 		~H_RectangularCollimator() {};
 	//@}
 		H_RectangularCollimator* clone() const;

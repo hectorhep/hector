@@ -31,9 +31,9 @@ class H_HorizontalQuadrupole : public H_Quadrupole {
 	public:
 	///     Constructors and destructor
 	//@{
-		H_HorizontalQuadrupole():H_Quadrupole(HQUADRUPOLE,0.,0.,0.) {init();}
-		H_HorizontalQuadrupole(const double s, const double k, const double l) : H_Quadrupole(HQUADRUPOLE,s,k,l){init();}
-		H_HorizontalQuadrupole(const string& nameE, const double s, const double k, const double l) : H_Quadrupole(nameE,HQUADRUPOLE,s,k,l){init();}
+		H_HorizontalQuadrupole():H_Quadrupole(HQUADRUPOLE,0.,0.,0.,0.) {init();}
+		H_HorizontalQuadrupole(const double s, const double k, const double l, const float eini) : H_Quadrupole(HQUADRUPOLE,s,k,l,eini){init();}
+		H_HorizontalQuadrupole(const string& nameE, const double s, const double k, const double l, const float eini) : H_Quadrupole(nameE,HQUADRUPOLE,s,k,l,eini){init();}
 		~H_HorizontalQuadrupole() {};
 	//@}
 		H_HorizontalQuadrupole* clone() const ;

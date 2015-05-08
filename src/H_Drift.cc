@@ -48,7 +48,7 @@ void H_Drift::setMatrix(const float eloss, const float p_mass, const float p_cha
 }
 
 H_Drift* H_Drift::clone() const {
-	H_Drift* temp_drift = new H_Drift(name,fs,element_length);
+	H_Drift* temp_drift = new H_Drift(name,fs,element_length,getInitialBeamEnergy());
 	temp_drift->setX(xpos);
 	temp_drift->setY(ypos);
 	temp_drift->setTX(txpos);

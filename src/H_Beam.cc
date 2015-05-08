@@ -30,7 +30,7 @@ using namespace std;
 
 H_Beam::H_Beam() {
         setPosition(PX,PY,TX+CRANG,TY,PS);
-        setE(BE);
+        setE(BE_DEF);
         setDispersion(SX,SY,STX,STY,SS);
         setDE(SBE);
 	Nparticles=0;
@@ -77,7 +77,7 @@ void H_Beam::createBeamParticles(const unsigned int Number_of_particles, const d
 	}
 }
 
-//void H_Beam::particleGun(const unsigned int Number_of_particles, const float E_min=BE, const float E_max=BE, const float fs_min=0, const float fs_max=0, const float fx_min=0, const float fx_max=0, const float fy_min=0, const float fy_max=0, const float tx_min=-PI/2., const float tx_max=PI/2., const float ty_min=-PI/2., const float ty_max=PI/2., const float p_mass=MP, const double p_charge=QP) {
+//void H_Beam::particleGun(const unsigned int Number_of_particles, const float E_min, const float E_max, const float fs_min=0, const float fs_max=0, const float fx_min=0, const float fx_max=0, const float fy_min=0, const float fy_max=0, const float tx_min=-PI/2., const float tx_max=PI/2., const float ty_min=-PI/2., const float ty_max=PI/2., const float p_mass=MP, const double p_charge=QP) {
 void H_Beam::particleGun(const unsigned int Number_of_particles, const float E_min, const float E_max, const float fs_min, const float fs_max, const float fx_min, const float fx_max, const float fy_min, const float fy_max, const float tx_min, const float tx_max, const float ty_min, const float ty_max, const float p_mass, const double p_charge, const bool flat, TRandom* r) {
         beamParticles.clear();
         Nparticles = (Number_of_particles<2) ? 2 : Number_of_particles;

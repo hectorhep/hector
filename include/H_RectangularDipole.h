@@ -30,9 +30,9 @@ class H_RectangularDipole : public H_Dipole {
 	public:
 		/// constructor
 		//@{
-		H_RectangularDipole():H_Dipole(RDIPOLE,0.,0.,0.) {init();}
-		H_RectangularDipole(const double s, const double k, const double l) :H_Dipole(RDIPOLE,s,k,l){init();}
-		H_RectangularDipole(const string& nameE, const double s, const double k, const double l) :H_Dipole(nameE,RDIPOLE,s,k,l){init();}
+		H_RectangularDipole():H_Dipole(RDIPOLE,0.,0.,0.,BE_DEF) {init();}
+		H_RectangularDipole(const double s, const double k, const double l, const float eini) :H_Dipole(RDIPOLE,s,k,l,eini){init();}
+		H_RectangularDipole(const string& nameE, const double s, const double k, const double l, const float eini) :H_Dipole(nameE,RDIPOLE,s,k,l,eini){init();}
 		~H_RectangularDipole() {};
 		//@}
 		H_RectangularDipole* clone() const ;

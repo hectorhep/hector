@@ -32,8 +32,8 @@ class H_Marker : public H_Drift {
 	/// Constructors and destructor
 	//@{
 		H_Marker():H_Drift() { type = MARKER; init();}
-        	H_Marker(const double s):H_Drift(s,0.) { type =MARKER; init();}
-	        H_Marker(const string& nameE, const double s):H_Drift(nameE,s,0.) { type=MARKER; init();}
+        	H_Marker(const double s, const float eini):H_Drift(s,0.,eini) { type =MARKER; init();}
+	        H_Marker(const string& nameE, const double s, const double eini):H_Drift(nameE,s,0.,eini) { type=MARKER; init();}
 	        ~H_Marker() { };
 	//@}
 		H_Marker* clone() const ;

@@ -30,13 +30,13 @@ void H_RectangularCollimator::init() {
 	return;
 }
 
-H_RectangularCollimator::H_RectangularCollimator(const double s, const double l) :H_Drift(s,l){
+H_RectangularCollimator::H_RectangularCollimator(const double s, const double l, const float eini) :H_Drift(s,l,eini){
 	type = RCOLLIMATOR;
 	init();
 	return;
 }
 
-H_RectangularCollimator::H_RectangularCollimator(const string& nameE, const double s, const double l) :H_Drift(nameE,s,l){
+H_RectangularCollimator::H_RectangularCollimator(const string& nameE, const double s, const double l, const float eini) :H_Drift(nameE,s,l,eini){
 	type = RCOLLIMATOR;
 	init();
 	return;
@@ -59,7 +59,7 @@ void H_RectangularCollimator::setMatrix(const float eloss, const float p_mass, c
 }
 
 H_RectangularCollimator* H_RectangularCollimator::clone() const {
-	H_RectangularCollimator* temp_coll = new H_RectangularCollimator(name,fs,element_length);
+	H_RectangularCollimator* temp_coll = new H_RectangularCollimator(name,fs,element_length,getInitialBeamEnergy());
 	temp_coll->setAperture(element_aperture);
 	temp_coll->setX(xpos);
 	temp_coll->setY(ypos);

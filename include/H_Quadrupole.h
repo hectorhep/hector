@@ -32,8 +32,8 @@ class H_Quadrupole : public H_OpticalElement {
 	///     Constructors and destructor
 	//@{
 		H_Quadrupole():H_OpticalElement() {}
-		H_Quadrupole(const int dtype, const double s, const double k, const double l) : H_OpticalElement(dtype,s,k,l) {}
-		H_Quadrupole(const string& nameE, const int dtype, const double s, const double k, const double l) : H_OpticalElement(nameE,dtype,s,k,l) {}
+		H_Quadrupole(const int dtype, const double s, const double k, const double l, const float eini) : H_OpticalElement(dtype,s,k,l,eini) {}
+		H_Quadrupole(const string& nameE, const int dtype, const double s, const double k, const double l, const float eini) : H_OpticalElement(nameE,dtype,s,k,l,eini) {}
 		virtual ~H_Quadrupole() {};
 	//@}	
 		virtual H_Quadrupole* clone() const =0 ;
@@ -42,7 +42,7 @@ class H_Quadrupole : public H_OpticalElement {
 
  	protected:
 		virtual void setTypeString() =0;
-		virtual void setMatrix(const float, const float, const float) = 0;
+		virtual void setMatrix(const float, const float, const float) =0;
 	   	
 	friend std::ostream& operator<< (std::ostream& os, const H_Quadrupole& el);
 };

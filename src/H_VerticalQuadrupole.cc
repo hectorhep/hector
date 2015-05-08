@@ -23,17 +23,19 @@
 #include "H_VerticalQuadrupole.h"
 
 void H_VerticalQuadrupole::setMatrix(const float eloss, const float p_mass, const float p_charge) {
-	if (fk<0)  { if(VERBOSE) cout<<"<H_VerticalQuadrupole> ERROR : k1 should be > 0 for H_VerticalQuadrupole (" << name << ")!"<<endl; }
-		if (fk !=0 ) element_mat = vquadmat(element_length,fk,eloss, p_mass,p_charge);
-		else  {
-			element_mat = driftmat(element_length);
-			if(VERBOSE) cout<<"<H_VerticalQuadrupole> WARNING : k1= 0, drift-like quadrupole (" << name << ") !" << endl;
-   		}
+	if (fk<0)  {
+		 if(VERBOSE) cout<<"<H_VerticalQuadrupole> ERROR : k1 should be > 0 for H_VerticalQuadrupole (" << name << ")!"<<endl;
+	 }
+	if (fk !=0 ) element_mat = vquadmat(element_length,fk,eini,eloss, p_mass,p_charge);
+	else  {
+		element_mat = driftmat(element_length);
+		if(VERBOSE) cout<<"<H_VerticalQuadrupole> WARNING : k1= 0, drift-like quadrupole (" << name << ") !" << endl;
+	}
 	return ;
 }
 
 H_VerticalQuadrupole* H_VerticalQuadrupole::clone() const {
-	H_VerticalQuadrupole* temp_quad = new H_VerticalQuadrupole(name,fs,fk,element_length);
+	H_VerticalQuadrupole* temp_quad = new H_VerticalQuadrupole(name,fs,fk,element_length,getInitialBeamEnergy());
 	temp_quad->setAperture(element_aperture);
 	temp_quad->setX(xpos);
 	temp_quad->setY(ypos);

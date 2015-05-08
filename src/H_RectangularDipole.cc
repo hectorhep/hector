@@ -23,7 +23,7 @@
 #include "H_TransportMatrices.h"
 
 void H_RectangularDipole::setMatrix(const float eloss, const float p_mass, const float p_charge) {
-	if (fk !=0 ) element_mat = rdipmat(element_length,fk,eloss,p_mass,p_charge);
+	if (fk !=0 ) element_mat = rdipmat(element_length,fk,eini,eloss,p_mass,p_charge);
 	else  {
 		element_mat = driftmat(element_length);
 		if(VERBOSE) cout<<"<H_RectangularDipole> WARNING : k0= 0, drift-like dipole (" << name << ") !" << endl;
@@ -32,7 +32,7 @@ void H_RectangularDipole::setMatrix(const float eloss, const float p_mass, const
 }
 
 H_RectangularDipole* H_RectangularDipole::clone() const {
-	H_RectangularDipole* temp_dip = new H_RectangularDipole(name,fs,fk,element_length);
+	H_RectangularDipole* temp_dip = new H_RectangularDipole(name,fs,fk,element_length,getInitialBeamEnergy());
 	temp_dip->setAperture(element_aperture);
 	temp_dip->setX(xpos);
 	temp_dip->setY(ypos);

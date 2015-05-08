@@ -44,7 +44,7 @@ void H_Marker::setMatrix(const float eloss, const float p_mass, const float p_ch
 }
 
 H_Marker* H_Marker::clone() const {
-	H_Marker* temp_mkr = new H_Marker(name,fs);
+	H_Marker* temp_mkr = new H_Marker(name,fs,getInitialBeamEnergy());
 	temp_mkr->setAperture(element_aperture);
 	temp_mkr->setX(xpos);
 	temp_mkr->setY(ypos);

@@ -48,8 +48,8 @@ class H_AbstractBeamLine {
 	public:
 		///     Constructors, destructor and operator
 		//@{
-		H_AbstractBeamLine() {init(LENGTH_DEF);};
-		H_AbstractBeamLine(const float length) {init(length);};
+		H_AbstractBeamLine() {init(LENGTH_DEF, BE_DEF);};
+		H_AbstractBeamLine(const float length, const float energy) {init(length, energy);};
 		H_AbstractBeamLine(const H_AbstractBeamLine &);
 		H_AbstractBeamLine& operator=(const H_AbstractBeamLine&);
 		H_AbstractBeamLine* clone() const ;
@@ -59,6 +59,8 @@ class H_AbstractBeamLine {
 		void add(H_OpticalElement *);
 		///     Returns the (float) length of the beamline
   		const float getLength() const { return beam_length;};
+		///	Returns the (float) beam energy (in GeV)
+		const float getBeamEnergy() const { return beam_energy;};
 		///     Returns the (int) number of optics element of the beamline, including drifts
   		const unsigned int getNumberOfElements() const { return elements.size();}; 
 		///     Returns the transport matrix for the whole beam
@@ -139,9 +141,11 @@ class H_AbstractBeamLine {
 		void cloneElements(const H_AbstractBeamLine&);
 
 	protected:
-		void init(const float );
+		void init(const float, const float);
 		/// total length of the beamline
 		float beam_length;
+		/// initial beam energy
+		float beam_energy;
 	friend std::ostream& operator<< (std::ostream& os, const H_AbstractBeamLine& be);
 };
 

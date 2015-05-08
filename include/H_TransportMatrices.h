@@ -76,7 +76,7 @@ extern void printMatrix(TMatrix);
  assuming \f$ k =  k_{0} \times \frac{p_{0}}{p_{0} - dp} \times \frac{q_{particle}}{q_{proton}} \f$ and \f$ \omega(k,l) = l \sqrt{|k|} \f$
 */
 
-extern TMatrix vquadmat(const float , const float , const float , const float , const float);
+extern TMatrix vquadmat(const float , const float , const float , const float , const float , const float);
 
 /// \brief Returns the matrix for a horizontally focussing quadrupole (H_HorizontalQuadrupole)
 
@@ -96,7 +96,7 @@ extern TMatrix vquadmat(const float , const float , const float , const float , 
 
  assuming \f$ k =  k_{0} \times \frac{p_{0}}{p_{0} - dp} \times \frac{q_{particle}}{q_{proton}} \f$ and \f$ \omega(k,l) = l \sqrt{|k|} \f$
 */
-extern TMatrix hquadmat(const float , const float , const float , const float , const float);
+extern TMatrix hquadmat(const float , const float , const float , const float , const float , const float);
 
 /// \brief Returns the matrix for a rectangle dipole (H_RectangularDipole)
 
@@ -119,7 +119,7 @@ extern TMatrix hquadmat(const float , const float , const float , const float , 
 Attention : numerical sensitivity with \f$ r*(1-\cos(l/r))/BE\f$. \\
 Using \f$ 2\sin^2(x/2) = 1-\cos(x)\f$ instead (see the variable called "simp")
 */
-extern TMatrix rdipmat(const float, const float , const float , const float , const float);
+extern TMatrix rdipmat(const float, const float , const float , const float , const float , const float);
 
 /// \brief Returns the matrix for a sector dipole (H_SectorDipole)
 
@@ -156,7 +156,7 @@ extern TMatrix rdipmat(const float, const float , const float , const float , co
  assuming \f$ 1/r = k =  k_{0} \times \frac{p_{0}}{p_{0} - dp} \times \frac{q_{particle}}{q_{proton}} \f$
 
 */
-extern TMatrix sdipmat(const float, const float , const float , const float , const float );
+extern TMatrix sdipmat(const float, const float , const float , const float , const float , const float);
 
 /// \brief Returns the matrix for a drift (H_Drift)
 
@@ -193,7 +193,7 @@ extern TMatrix driftmat(const float );
  
  assuming \f$ k =  k_{0} \times \frac{p_{0}}{p_{0} - dp} \times \frac{q_{particle}}{q_{proton}} \f$
 */
-extern TMatrix hkickmat(const float, const float , const float , const float, const float);
+extern TMatrix hkickmat(const float, const float , const float , const float, const float , const float);
 
 /// \brief Returns the matrix for a vertical kicker (H_VerticalKicker)
 /*! \f$
@@ -212,7 +212,7 @@ extern TMatrix hkickmat(const float, const float , const float , const float, co
 
  assuming \f$ k =  k_{0} \times \frac{p_{0}}{p_{0} - dp} \times \frac{q_{particle}}{q_{proton}} \f$
 */
-extern TMatrix vkickmat(const float, const float , const float , const float , const float);
+extern TMatrix vkickmat(const float, const float , const float , const float , const float , const float);
 
 
 

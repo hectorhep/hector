@@ -65,23 +65,6 @@ H_RecRPObject::H_RecRPObject(const float ss1, const float ss2, const H_AbstractB
 }
 
 
-H_RecRPObject::H_RecRPObject(const float ss1, const float ss2, const H_AbstractBeamLine& beam) : emin(0), emax(-1), x1(0), x2(0), y1(0), y2(0), s1(ss1), s2(ss2),
-                                txip(NOT_YET_COMPUTED), tyip(NOT_YET_COMPUTED), energy(NOT_YET_COMPUTED), q2(NOT_YET_COMPUTED), pt(NOT_YET_COMPUTED),
-                                thebeam(beam.clone()),
-                                f_1(new TF1("f_1","[0] + [1]*x + [2]*x*x ",emin,emax)),
-                                f_2(new TF1("f_2","[0] + [1]*x + [2]*x*x ",emin,emax)),
-                                g_1(new TF1("g_1","[0] + [1]*x + [2]*x*x ",emin,emax)),
-                                g_2(new TF1("g_2","[0] + [1]*x + [2]*x*x ",emin,emax)),
-                                d_1(new TF1("d_1","[0] + [1]*x + [2]*x*x ",emin,emax)),
-                                d_2(new TF1("d_2","[0] + [1]*x + [2]*x*x ",emin,emax)),
-                                k_1(new TF1("k_1","[0] + [1]*x + [2]*x*x ",emin,emax)),
-                                k_2(new TF1("k_2","[0] + [1]*x + [2]*x*x ",emin,emax)),
-                                l_1(new TF1("l_1","[0] + [1]*x + [2]*x*x ",emin,emax)),
-                                l_2(new TF1("l_2","[0] + [1]*x + [2]*x*x ",emin,emax))
-        {if(ss1==ss2) cout<<"<H_RecRPObject> WARNING : detectors are on same position"<<endl;
-}
-
-
 H_RecRPObject::H_RecRPObject(const H_RecRPObject& r):
    emin(r.emin), emax(r.emax), x1(r.x1), x2(r.x2), y1(r.y1), y2(r.y2), s1(r.s1), s2(r.s2),
    txip(r.txip), tyip(r.tyip), energy(r.energy), q2(r.q2),  pt(r.pt), 
@@ -135,8 +118,8 @@ void H_RecRPObject::initialize() {
 	}
 
 	H_AbstractBeamLine * b1 = thebeam->clone();
-	H_RomanPot * rp1 = new H_RomanPot("rp1",s1,0);
-	H_RomanPot * rp2 = new H_RomanPot("rp2",s2,0);
+	H_RomanPot * rp1 = new H_RomanPot("rp1",s1,0,thebeam->getBeamEnergy());
+	H_RomanPot * rp2 = new H_RomanPot("rp2",s2,0,thebeam->getBeamEnergy());
 	b1->add(rp1);
 	b1->add(rp2);
 
@@ -268,18 +251,18 @@ void H_RecRPObject::computeERange() {
 	// in order to refine the fits and get maximum precision.
 	energy = NOT_YET_COMPUTED;
 	H_AbstractBeamLine * b1 = thebeam->clone();
-	H_RomanPot * rp1 = new H_RomanPot("rp1",s1,0);
+	H_RomanPot * rp1 = new H_RomanPot("rp1",s1,0,thebeam->getBeamEnergy());
 	b1->add(rp1);
 	float max = 1;
 	// number of energies to check 
 	const int N = 1000;
 	for(int i=0; i<N; i++) {
 		H_BeamParticle p;
-		p.setE(BE - (emin + i*(BE-emin)/((float)N)));
+		p.setE(thebeam->getBeamEnergy() - (emin + i*(thebeam->getBeamEnergy()-emin)/((float)N)));
 		p.computePath(b1);
 		if(p.stopped(b1)) {
 			if(p.getStoppingElement()->getName()=="rp1") {
-				max = emin + i*(BE-emin)/((float)N);
+				max = emin + i*(thebeam->getBeamEnergy()-emin)/((float)N);
 			}
 		}
 	}
@@ -324,7 +307,7 @@ void H_RecRPObject::computeAll() {
 	energy = p_xy_E.GetMaximumX(emin,emax);
 	txip = xp_E.Eval(energy);
 	tyip = yp_E.Eval(energy);
-	pt = sqrt(BE*(BE-energy)*(txip*txip+tyip*tyip)/(MEGA*MEGA));
+	pt = sqrt(thebeam->getBeamEnergy()*(thebeam->getBeamEnergy()-energy)*(txip*txip+tyip*tyip)/(MEGA*MEGA));
 
 	return;
 }

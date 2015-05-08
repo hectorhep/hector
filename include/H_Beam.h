@@ -63,7 +63,7 @@ class H_Beam {
 		~H_Beam();
 	//@}
         /// Fills the beam with particles in given position/angle/energy        intervals (flat distribution)
-                void particleGun(const unsigned int Number_of_particles, const float E_min=BE, const float E_max=BE, const float fs_min=0, const float fs_max=0, const float fx_min=0, const float fx_max=0, const float fy_min=0, const float fy_max=0, const float tx_min=-TMath::Pi()/2., const float tx_max=TMath::Pi()/2., const float ty_min=-TMath::Pi()/2., const float ty_max=TMath::Pi()/2., const float p_mass=MP, const double p_charge=QP, const bool flat = true, TRandom* r=gRandom);
+                void particleGun(const unsigned int Number_of_particles, const float E_min, const float E_max, const float fs_min=0, const float fs_max=0, const float fx_min=0, const float fx_max=0, const float fy_min=0, const float fy_max=0, const float tx_min=-TMath::Pi()/2., const float tx_max=TMath::Pi()/2., const float ty_min=-TMath::Pi()/2., const float ty_max=TMath::Pi()/2., const float p_mass=MP, const double p_charge=QP, const bool flat = true, TRandom* r=gRandom);
 
 	/// Fills the beam with particles
 		void createBeamParticles(const unsigned int Number_of_particles, const double p_mass=MP, const double p_charge=QP, TRandom* r=gRandom);

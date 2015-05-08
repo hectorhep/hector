@@ -31,14 +31,14 @@ void H_RomanPot::init() {
 	return;
 }
 
-H_RomanPot::H_RomanPot(const double s, const double app) :H_Drift(s,RP_LENGTH){
+H_RomanPot::H_RomanPot(const double s, const double app, const float eini) :H_Drift(s,RP_LENGTH,eini){
 		type = RP;
 		init();
 		if(element_aperture) delete element_aperture;
 		element_aperture = new H_RectangularAperture(app,RP_HEIGHT,0,0);
 }
 
-H_RomanPot::H_RomanPot(const string& nameE, const double s, const double app) :H_Drift(nameE,s,RP_LENGTH){
+H_RomanPot::H_RomanPot(const string& nameE, const double s, const double app, const float eini) :H_Drift(nameE,s,RP_LENGTH,eini){
 		type = RP;
 		init();
 		if(element_aperture) delete element_aperture;
@@ -59,7 +59,7 @@ void H_RomanPot::setMatrix(const float eloss, const float p_mass, const float p_
 }
 
 H_RomanPot* H_RomanPot::clone() const {
-	H_RomanPot* temp_rp = new H_RomanPot(name,fs,element_length);
+	H_RomanPot* temp_rp = new H_RomanPot(name,fs,element_length,getInitialBeamEnergy());
 	temp_rp->setAperture(element_aperture);
 	temp_rp->setX(xpos);
 	temp_rp->setY(ypos);

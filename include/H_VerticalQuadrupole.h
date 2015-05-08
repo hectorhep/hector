@@ -29,18 +29,18 @@
 /// Vertically focussing quadrupoles.
 class H_VerticalQuadrupole : public H_Quadrupole {
 
-	public:
+public:
 	///     Constructors and destructor
 	//@{
-		H_VerticalQuadrupole():H_Quadrupole(VQUADRUPOLE,0.,0.,0.) {init();}
-		H_VerticalQuadrupole(const double s, const double k, const double l):H_Quadrupole(VQUADRUPOLE,s,k,l) {init();}
-		H_VerticalQuadrupole(const string& nameE, const double s, const double k, const double l):H_Quadrupole(nameE,VQUADRUPOLE,s,k,l) {init();}
+	H_VerticalQuadrupole():H_Quadrupole(VQUADRUPOLE,0.,0.,0.,BE_DEF) {init();}
+	H_VerticalQuadrupole(const double s, const double k, const double l, const float eini):H_Quadrupole(VQUADRUPOLE,s,k,l,eini) {init();}
+	H_VerticalQuadrupole(const string& nameE, const double s, const double k, const double l, const float eini):H_Quadrupole(nameE,VQUADRUPOLE,s,k,l,eini) {init();}
 	~H_VerticalQuadrupole() {};
 //@}
 	H_VerticalQuadrupole* clone() const ;
 private:
-		virtual void setTypeString() {typestring = VQUADRUPOLENAME;} ;
-		virtual void setMatrix(const float, const float, const float) ;
+	virtual void setTypeString() {typestring = VQUADRUPOLENAME;} ;
+	virtual void setMatrix(const float, const float, const float) ;
 };
 
 #endif

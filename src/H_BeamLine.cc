@@ -49,7 +49,7 @@ H_BeamLine::H_BeamLine(): H_AbstractBeamLine(),
 	direction(1), ips(0), ipx(0), ipy(0), iptx(0), ipty(0) {
 }
 
-H_BeamLine::H_BeamLine(const int si, const float length) : H_AbstractBeamLine(length),
+H_BeamLine::H_BeamLine(const int si, const float length, const float energy) : H_AbstractBeamLine(length, energy),
 	direction((si >= abs(si)) ? 1 : -1), ips(0), ipx(0), ipy(0), iptx(0), ipty(0) {
 }
 
@@ -173,15 +173,15 @@ void H_BeamLine::fill(const string& filename, const int dir, const string& ipnam
 			
 			el=0; //init
 			switch(type) {
-				case RDIPOLE:     { el = new H_RectangularDipole(e.name.c_str(),e.s,dir*e.k0l/e.l,e.l); } break;
-				case SDIPOLE:     { el = new H_SectorDipole(e.name.c_str(),e.s,dir*e.k0l/e.l,e.l); } break;
-				case VQUADRUPOLE: { el = new H_VerticalQuadrupole(e.name.c_str(),e.s,-(e.k1l/e.l),e.l); } break;
-				case HQUADRUPOLE: { el = new H_HorizontalQuadrupole(e.name.c_str(),e.s,-(e.k1l/e.l),e.l); } break;
-				case VKICKER:     { el = new H_VerticalKicker(e.name.c_str(),e.s,e.vkick,e.l); } break;
-				case HKICKER:     { el = new H_HorizontalKicker(e.name.c_str(),e.s,e.hkick,e.l); } break;
-				case RCOLLIMATOR: { el = new H_RectangularCollimator(e.name.c_str(),e.s,e.l); } break;
+				case RDIPOLE:     { el = new H_RectangularDipole(e.name.c_str(),e.s,dir*e.k0l/e.l,e.l,getBeamEnergy()); } break;
+				case SDIPOLE:     { el = new H_SectorDipole(e.name.c_str(),e.s,dir*e.k0l/e.l,e.l,getBeamEnergy()); } break;
+				case VQUADRUPOLE: { el = new H_VerticalQuadrupole(e.name.c_str(),e.s,-(e.k1l/e.l),e.l,getBeamEnergy()); } break;
+				case HQUADRUPOLE: { el = new H_HorizontalQuadrupole(e.name.c_str(),e.s,-(e.k1l/e.l),e.l,getBeamEnergy()); } break;
+				case VKICKER:     { el = new H_VerticalKicker(e.name.c_str(),e.s,e.vkick,e.l,getBeamEnergy()); } break;
+				case HKICKER:     { el = new H_HorizontalKicker(e.name.c_str(),e.s,e.hkick,e.l,getBeamEnergy()); } break;
+				case RCOLLIMATOR: { el = new H_RectangularCollimator(e.name.c_str(),e.s,e.l,getBeamEnergy()); } break;
 				case DRIFT: {previous_betax = e.betx; previous_betay = e.bety; previous_dx = e.dx; previous_dy = e.dy; previous_x = e.x; previous_y = e.y;} break;
-				case IP: { el = new H_Marker(e.name.c_str(),e.s); } break;
+				case IP: { el = new H_Marker(e.name.c_str(),e.s,getBeamEnergy()); } break;
 				default: break;
 			}
 

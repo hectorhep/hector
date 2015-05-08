@@ -53,7 +53,7 @@ void H_BeamParticle::init() { // for more efficiency, put the objects away from 
         thx = 0;
         thy = 0;
         fs = 0;
-        energy = BE;
+        //energy = BE_DEF; //FIXME
         hasstopped = false;
         hasemitted = false;
 	isphysical = true;
@@ -125,7 +125,7 @@ const bool H_BeamParticle::stopped(const H_AbstractBeamLine * beamline) {
 				hasstopped=true;
 				stop_element = const_cast<H_OpticalElement*>(beamline->getElement(pos));
 				// this should be computed using the element-based method "H_OpticalElement::getHitPosition" (caution : always nonlinear).
-				*stop_position = beamline->getElement(pos)->getHitPosition(*position_i,BE-energy,mp,qp);
+				*stop_position = beamline->getElement(pos)->getHitPosition(*position_i,beamline->getBeamEnergy()-energy,mp,qp);
 				if(VERBOSE) cout<<" at s = "<<(*stop_position)[4]<<endl;
 				return hasstopped;
 			}
@@ -237,7 +237,7 @@ void H_BeamParticle::setPosition(const double x, const double y, const double tx
 
 const H_OpticalElement* H_BeamParticle::getStoppingElement() const{
 	if(hasstopped) return stop_element;
-	else { H_OpticalElement * dummy_el = new H_Drift("",0,0); return dummy_el;}
+	else { H_OpticalElement * dummy_el = new H_Drift("",0,0,0); return dummy_el;}
 }
 
 void H_BeamParticle::emitGamma(const double gee, const double gq2, const double phimin, const double phimax) {
@@ -284,7 +284,7 @@ void H_BeamParticle::emitGamma(const double gee, const double gq2, const double 
 	double ceta = sqrt( pow(mp/p1,2) + 1  ) * sqrt( q2/pow(gkk,2) + 1 ) - q2/(2*p1*gkk);
 	double seta = sqrt(1 - ceta*ceta); 
 	// theta is the angle between particle and beam
-        double theta = URAD*atan(seta/(BE/gkk - ceta));
+        double theta = URAD*atan(seta/(BE_DEF/gkk - ceta));
         double phi = phimin + gRandom->Uniform(phimax-phimin);
         thx = thx + theta*cos(phi);
         thy = thy - theta*sin(phi);
@@ -474,7 +474,7 @@ void H_BeamParticle::computePath(const H_AbstractBeamLine * beam, const bool Non
 
 		extern bool relative_energy;
 		if(relative_energy) {
-        	vec[4] = energy-BE;
+        	vec[4] = energy-beam->getBeamEnergy();
 		} else {
         	vec[4] = energy;
 		}
@@ -484,7 +484,7 @@ void H_BeamParticle::computePath(const H_AbstractBeamLine * beam, const bool Non
 	const int N =beam->getNumberOfElements();
 	double xys[LENGTH_VEC];
 
-	double energy_loss = NonLinear?BE-energy:0;
+	double energy_loss = NonLinear ? beam->getBeamEnergy()-energy : 0;
 
 	for (int i=0; i<N; i++) {
 		const unsigned pos = i;
@@ -549,7 +549,7 @@ void H_BeamParticle::computePath(const H_AbstractBeamLine & beam, const bool Non
 
 		extern bool relative_energy;
 		if(relative_energy) {
-        	vec[4] = energy-BE;
+        	vec[4] = energy-beam.getBeamEnergy();
 		} else {
         	vec[4] = energy;
 		}
@@ -559,7 +559,7 @@ void H_BeamParticle::computePath(const H_AbstractBeamLine & beam, const bool Non
 	const int N =beam.getNumberOfElements();
 	double xys[LENGTH_VEC];
 
-	double energy_loss = NonLinear?BE-energy:0;
+	double energy_loss = NonLinear ? beam.getBeamEnergy()-energy : 0;
 
 	// modify here to allow starting at non-IP positions
 	// s is distance to IP

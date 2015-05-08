@@ -183,12 +183,12 @@ debug : $(OBJECTS)
 # ----- make depend -----
 $(DEPENDENCIES) depend : $(HEADERS) $(SOURCES) 
 	@echo Making the dependency file : $(DEPENDENCIES) 
-	@g++ -MM $(SRC)/H_*.cc $(WARNINGS) -I$(INC) -I$(ROOTSYS)/include > $(DEPENDENCIES) 
+	@g++ -MM $(ROOTCFLAGS) $(SRC)/H_*.cc $(WARNINGS) -I$(INC) -I$(ROOTSYS)/include > $(DEPENDENCIES) 
 
 $(ROUTINESDEPENDENCIES) : $(ROUTINESHEADERS) $(HEADERS)
 	@echo Making the dependency file : $(ROUTINESDEPENDENCIES) 
 	@echo $(ROUTINESSOURCESFULLNAME)
-	@g++ -MM $(ROUTINESSOURCESFULLNAME) $(WARNINGS) -I$(INC) -I$(ROUTINESINC) -I$(ROOTSYS)/include > $(ROUTINESDEPENDENCIES) 
+	@g++ -MM $(ROOTCFLAGS) $(ROUTINESSOURCESFULLNAME) $(WARNINGS) -I$(INC) -I$(ROUTINESINC) -I$(ROOTSYS)/include > $(ROUTINESDEPENDENCIES) 
 #Creates the file $(DEPENDENCIES)
 #"g++ -MM " produces the same output as "makedepend" but with the $@.cc file added to the list, which is needed here
 

@@ -31,8 +31,8 @@ class H_Dipole : public H_OpticalElement {
 		/// Constructors and destructor
 		//@{
 		H_Dipole():H_OpticalElement() {}
-		H_Dipole(const int dtype, const double s, const double k, const double l):H_OpticalElement(dtype,s,k,l){}
-		H_Dipole(const string& nameE, const int dtype, const double s, const double k, const double l):H_OpticalElement(nameE,dtype,s,k,l){}
+		H_Dipole(const int dtype, const double s, const double k, const double l, const float eini):H_OpticalElement(dtype,s,k,l,eini){}
+		H_Dipole(const string& nameE, const int dtype, const double s, const double k, const double l, const float eini):H_OpticalElement(nameE,dtype,s,k,l,eini){}
 	        virtual ~H_Dipole() {};
 		//@}
 		/// Prints the properties of the element

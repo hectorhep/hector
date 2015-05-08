@@ -41,11 +41,12 @@
 #include "H_RomanPot.h"
 using namespace std;
 
-void H_AbstractBeamLine::init(const float length) {
+void H_AbstractBeamLine::init(const float length, const float energy) {
 	beam_mat.ResizeTo(MDIM,MDIM);
 	beam_mat = driftmat(length);
   	beam_length = length;
-	H_Drift * drift0 = new H_Drift("Drift0",0.,length);
+	beam_energy = energy;
+	H_Drift * drift0 = new H_Drift("Drift0",0.,length,energy);
 	add(drift0);
 	return;
 }
@@ -57,6 +58,7 @@ H_AbstractBeamLine::H_AbstractBeamLine(const H_AbstractBeamLine& beamline) :
 	beam_mat.ResizeTo(MDIM,MDIM);
 	beam_mat = beamline.beam_mat;
 	beam_length = beamline.beam_length;
+	beam_energy = beamline.beam_energy;
 }
 
 H_AbstractBeamLine& H_AbstractBeamLine::operator=(const H_AbstractBeamLine& beamline) {
@@ -66,11 +68,12 @@ H_AbstractBeamLine& H_AbstractBeamLine::operator=(const H_AbstractBeamLine& beam
         matrices = beamline.matrices;
         beam_mat = beamline.beam_mat;
 	beam_length = beamline.beam_length;
+	beam_energy = beamline.beam_energy;
 	return *this;
 }
 
 H_AbstractBeamLine* H_AbstractBeamLine::clone() const {
-	H_AbstractBeamLine* temp_beam = new H_AbstractBeamLine(beam_length);
+	H_AbstractBeamLine* temp_beam = new H_AbstractBeamLine(beam_length, beam_energy);
 	vector<H_OpticalElement*>::const_iterator element_i;
 	for (element_i = elements.begin(); element_i<elements.end(); element_i++) {
 		if((*element_i)->getType()!=DRIFT) {
@@ -282,7 +285,7 @@ void H_AbstractBeamLine::calcSequence() {
 	for(element_i=elements.begin(); element_i < elements.end(); element_i++) {
 		drift_length = (*element_i)->getS() - current_pos;
 		if(drift_length>0) {
-  			H_Drift *dr = new H_Drift(current_pos,drift_length);
+  			H_Drift *dr = new H_Drift(current_pos,drift_length,beam_energy);
 			temp_elements.push_back(dr); 
 		}
 		temp_elements.push_back(*element_i);
@@ -292,7 +295,7 @@ void H_AbstractBeamLine::calcSequence() {
 	//adding the last drift
 	drift_length = beam_length - current_pos;
 	if (drift_length>0) {
-			H_Drift *dr = new H_Drift(current_pos,drift_length);
+			H_Drift *dr = new H_Drift(current_pos,drift_length,beam_energy);
 			temp_elements.push_back(dr);
 	}
 	

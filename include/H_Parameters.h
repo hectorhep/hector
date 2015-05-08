@@ -36,11 +36,9 @@ const double URAD=1000000.;
 
 /* beam parameters */
    /// beam nominal energy in GeV
-const double BE=7000.;
+const double BE_DEF=7000.;
    /// beam energy divergence, in GeV
 const double SBE=0.79;
-   /// beam nominal energy in TeV
-const double BETEV=7.;
    /// beam S @ IP
 const double PS=0.;
    /// beam X @ IP

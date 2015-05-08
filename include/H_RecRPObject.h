@@ -34,7 +34,6 @@ class H_RecRPObject {
 	public:
 		H_RecRPObject();
 		H_RecRPObject(const float, const float, const H_AbstractBeamLine* );
-		H_RecRPObject(const float, const float, const H_AbstractBeamLine& ); // old-fashioned -- to be deleted
 		H_RecRPObject(const H_RecRPObject&);
 		H_RecRPObject& operator=(const H_RecRPObject&);
 		~H_RecRPObject() {delete f_1; delete f_2; delete g_1; delete g_2; 

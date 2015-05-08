@@ -35,8 +35,8 @@ class H_RomanPot : public H_Drift {
 	///     Constructors and destructor
 	//@{
 		H_RomanPot():H_Drift() {type = RP; init();}
-		H_RomanPot(const string&, const double, const double);
-		H_RomanPot(const double, const double);
+		H_RomanPot(const string&, const double, const double, const float);
+		H_RomanPot(const double, const double, const float);
 		~H_RomanPot() {};
 	//@}
 		H_RomanPot* clone() const ;

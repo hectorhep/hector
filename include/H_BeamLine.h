@@ -40,7 +40,7 @@ class H_BeamLine : public H_AbstractBeamLine {
 	//@{
 		H_BeamLine();
 		H_BeamLine(const H_BeamLine& );
-		H_BeamLine(const int, const float);
+		H_BeamLine(const int, const float, const float energy=BE_DEF);
 		H_BeamLine& operator=(const H_BeamLine& );
 		~H_BeamLine() {};
 	//@

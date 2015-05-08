@@ -33,8 +33,8 @@ public:
 	/// Constructors and destructor
 	//@{
 		H_Kicker():H_OpticalElement() {}
-		H_Kicker(const int dtype, const double s, const double k, const double l):H_OpticalElement(dtype,s,k,l){}
-		H_Kicker(const string& nameE, const int dtype, const double s, const double k, const double l):H_OpticalElement(nameE,dtype,s,k,l){}
+		H_Kicker(const int dtype, const double s, const double k, const double l, const float eini):H_OpticalElement(dtype,s,k,l,eini){}
+		H_Kicker(const string& nameE, const int dtype, const double s, const double k, const double l, const float eini):H_OpticalElement(nameE,dtype,s,k,l,eini){}
 		virtual ~H_Kicker() {};
 	//@}
 		virtual H_Kicker* clone() const = 0;

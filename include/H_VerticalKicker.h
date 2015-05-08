@@ -34,9 +34,9 @@ class H_VerticalKicker : public H_Kicker {
 	public:
 	/// Constructors and destructor
 	//@{
-		H_VerticalKicker():H_Kicker(VKICKER,0.,0.,0.) {init();}
-		H_VerticalKicker(const double s, const double k, const double l) :H_Kicker(VKICKER,s,k,l){init();}
-		H_VerticalKicker(const string& nameE, const double s, const double k, const double l) :H_Kicker(nameE,VKICKER,s,k,l){init();}
+		H_VerticalKicker():H_Kicker(VKICKER,0.,0.,0.,0.) {init();}
+		H_VerticalKicker(const double s, const double k, const double l, const float eini) :H_Kicker(VKICKER,s,k,l,eini){init();}
+		H_VerticalKicker(const string& nameE, const double s, const double k, const double l, const float eini) :H_Kicker(nameE,VKICKER,s,k,l,eini){init();}
 		~H_VerticalKicker() {};
 	//@}
 		H_VerticalKicker* clone() const ;

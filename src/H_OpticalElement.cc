@@ -34,7 +34,7 @@
 using namespace std;
 
 /// called by the constructors
-void H_OpticalElement::init(const string& nameE, const int typeE, const double s, const double k, const double l) {
+void H_OpticalElement::init(const string& nameE, const int typeE, const double s, const double k, const double l, const float e_ini) {
 	// this is called by the constructors
 	// must be in public section !
 	// xpos and ypos are vectors with n point. They define the aperture shape of the optical element.
@@ -49,6 +49,7 @@ void H_OpticalElement::init(const string& nameE, const int typeE, const double s
  	type = typeE;
 	element_mat.ResizeTo(MDIM,MDIM);
  	element_mat = driftmat(l);
+	eini = e_ini;
 
 	// do NOT use setAperture for the initialisation ! there are protections there
 	
@@ -59,23 +60,23 @@ void H_OpticalElement::init(const string& nameE, const int typeE, const double s
 }
 
 H_OpticalElement::H_OpticalElement() : element_aperture(new H_Aperture()) {
-	init("",DRIFT,0.,0.,0.1);
+	init("",DRIFT,0.,0.,0.1,BE_DEF);
 }
 
-H_OpticalElement::H_OpticalElement(const string& nameE, const int typeE, const double s, const double k, const double l) : element_aperture(new H_Aperture()) {
-	init(nameE,typeE,s,k,l);
+H_OpticalElement::H_OpticalElement(const string& nameE, const int typeE, const double s, const double k, const double l, const float eini) : element_aperture(new H_Aperture()) {
+	init(nameE,typeE,s,k,l,eini);
 }
 
-H_OpticalElement::H_OpticalElement(const string& nameE, const int typeE, const double s, const double k, const double l, H_Aperture* the_app) : element_aperture(the_app->clone()) {
-	init(nameE,typeE,s,k,l);
+H_OpticalElement::H_OpticalElement(const string& nameE, const int typeE, const double s, const double k, const double l, H_Aperture* the_app, const float eini) : element_aperture(the_app->clone()) {
+	init(nameE,typeE,s,k,l,eini);
 }
 
-H_OpticalElement::H_OpticalElement(const int typeE, const double s, const double k, const double l, H_Aperture* the_app) : element_aperture(the_app->clone()) {
-	init("",typeE,s,k,l);
+H_OpticalElement::H_OpticalElement(const int typeE, const double s, const double k, const double l, H_Aperture* the_app, const float eini) : element_aperture(the_app->clone()) {
+	init("",typeE,s,k,l,eini);
 }
 
-H_OpticalElement::H_OpticalElement(const int typeE, const double s, const double k, const double l) : element_aperture(new H_Aperture()) {
-	init("",typeE,s,k,l);
+H_OpticalElement::H_OpticalElement(const int typeE, const double s, const double k, const double l, const float eini) : element_aperture(new H_Aperture()) {
+	init("",typeE,s,k,l,eini);
 }
 
 H_OpticalElement::H_OpticalElement(const H_OpticalElement& el) {
@@ -94,6 +95,7 @@ H_OpticalElement::H_OpticalElement(const H_OpticalElement& el) {
 	element_mat.ResizeTo(MDIM,MDIM);
 	element_mat = el.element_mat;
 	element_aperture = el.element_aperture->clone();
+	eini = el.eini;
 }
 
 H_OpticalElement& H_OpticalElement::operator=(const H_OpticalElement& el) {
@@ -113,6 +115,7 @@ H_OpticalElement& H_OpticalElement::operator=(const H_OpticalElement& el) {
 	element_mat.ResizeTo(MDIM,MDIM);
         element_mat = el.element_mat;
         element_aperture = el.element_aperture->clone();
+	eini = el.eini;
 	return *this;
 }
 

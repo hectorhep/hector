@@ -24,7 +24,7 @@
 
 void H_HorizontalQuadrupole::setMatrix(const float eloss, const float p_mass, const float p_charge) {
 	if (fk>0)  { if(VERBOSE) cout<<"<H_HorizontalQuadrupole> ERROR : k1 should be < 0 (" << name << ")!"<<endl; }
-		if (fk !=0 ) element_mat = hquadmat(element_length,fk,eloss, p_mass, p_charge);
+		if (fk !=0 ) element_mat = hquadmat(element_length,fk, getInitialBeamEnergy(), eloss, p_mass, p_charge);
 		else  {
 			element_mat = driftmat(element_length);
 			if(VERBOSE) cout<<"<H_HorizontalQuadrupole> WARNING : k1= 0 ; drift-like quadrupole (" << name << ") !" << endl;
@@ -33,7 +33,7 @@ void H_HorizontalQuadrupole::setMatrix(const float eloss, const float p_mass, co
 }
 
 H_HorizontalQuadrupole* H_HorizontalQuadrupole::clone() const {
-	H_HorizontalQuadrupole* temp_quad = new H_HorizontalQuadrupole(name,fs,fk,element_length);
+	H_HorizontalQuadrupole* temp_quad = new H_HorizontalQuadrupole(name,fs,fk,element_length,getInitialBeamEnergy());
 	temp_quad->setAperture(element_aperture);
 	temp_quad->setX(xpos);
 	temp_quad->setY(ypos);

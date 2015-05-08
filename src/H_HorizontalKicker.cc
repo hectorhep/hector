@@ -30,7 +30,7 @@ int kickers_on = 0;
 void H_HorizontalKicker::setMatrix(const float eloss, const float p_mass, const float p_charge) {
 	extern int kickers_on;
 	if(kickers_on) {
-		element_mat = hkickmat(element_length,fk,eloss,p_mass,p_charge);
+		element_mat = hkickmat(element_length,fk,eini,eloss,p_mass,p_charge);
 	} else {
 		element_mat = driftmat(element_length);
 	}
@@ -38,7 +38,7 @@ void H_HorizontalKicker::setMatrix(const float eloss, const float p_mass, const 
 }
 
 H_HorizontalKicker* H_HorizontalKicker::clone() const {
-	H_HorizontalKicker* temp_kick = new H_HorizontalKicker(name,fs,fk,element_length);
+	H_HorizontalKicker* temp_kick = new H_HorizontalKicker(name,fs,fk,element_length,getInitialBeamEnergy());
 	temp_kick->setAperture(element_aperture);
 	temp_kick->setX(xpos);
 	temp_kick->setY(ypos);

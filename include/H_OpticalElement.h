@@ -64,13 +64,13 @@ class H_OpticalElement {
 
 	public:
         ///     init method for constructors
-                void init(const string&, const int , const double , const double , const double);
+                void init(const string&, const int , const double , const double , const double, const float);
 		/// Constructors and destructor
 		//@{
-		H_OpticalElement(const string&, const int, const double, const double, const double, H_Aperture*);
-		H_OpticalElement(const int, const double, const double, const double, H_Aperture*);
-		H_OpticalElement(const string&, const int, const double, const double, const double);
-		H_OpticalElement(const int, const double, const double, const double);
+		H_OpticalElement(const string&, const int, const double, const double, const double, H_Aperture*, const float);
+		H_OpticalElement(const int, const double, const double, const double, H_Aperture*, const float);
+		H_OpticalElement(const string&, const int, const double, const double, const double, const float);
+		H_OpticalElement(const int, const double, const double, const double, const float);
 		H_OpticalElement();
 		H_OpticalElement(const H_OpticalElement&);
 		virtual ~H_OpticalElement() { delete element_aperture;};
@@ -140,6 +140,7 @@ class H_OpticalElement {
 		//@}
 		///     Returns the element aperture
 		H_Aperture* getAperture() const {return element_aperture;};
+                inline float getInitialBeamEnergy() const { return eini;};
 		///	Sets the beta functions
 		//@{
 		inline void setBetaX(const double beta) { betax = beta;};
@@ -187,6 +188,10 @@ class H_OpticalElement {
 		/// Beam \f$ \beta \f$ functions.
 		//@{
 		double betax, betay;
+                //@}
+                /// Initial beam energy (in GeV)
+                //@{
+                float eini;
 		//@}
 		/// Beam dispersion in position 
 		//@{

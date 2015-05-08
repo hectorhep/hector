@@ -33,9 +33,9 @@ class H_HorizontalKicker : public H_Kicker {
 	public:
 	/// Constructors and destructor
 	//@{
-		H_HorizontalKicker():H_Kicker(HKICKER,0.,0.,0.) {init();}
-		H_HorizontalKicker(const double s, const double k, const double l) :H_Kicker(HKICKER,s,k,l){init();}
-		H_HorizontalKicker(const string &nameE, const double s, const double k, const double l) :H_Kicker(nameE,HKICKER,s,k,l){init();}
+		H_HorizontalKicker():H_Kicker(HKICKER,0.,0.,0.,0.) {init();}
+		H_HorizontalKicker(const double s, const double k, const double l, const float eini) :H_Kicker(HKICKER,s,k,l,eini){init();}
+		H_HorizontalKicker(const string &nameE, const double s, const double k, const double l, const float eini) :H_Kicker(nameE,HKICKER,s,k,l,eini){init();}
 		~H_HorizontalKicker() {};
 	//@}
 		H_HorizontalKicker* clone() const;

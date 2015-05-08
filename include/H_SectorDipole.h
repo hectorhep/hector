@@ -30,9 +30,9 @@ class H_SectorDipole : public H_Dipole {
 	public:
 		/// Constructors and destructor
 		//@{
-		H_SectorDipole():H_Dipole(SDIPOLE,0.,0.,0.) {init();}
-		H_SectorDipole(const double s, const double k, const double l) :H_Dipole(SDIPOLE,s,k,l){init();}
-		H_SectorDipole(const string& nameE, const double s, const double k, const double l) :H_Dipole(nameE,SDIPOLE,s,k,l){init();}
+		H_SectorDipole():H_Dipole(SDIPOLE,0.,0.,0.,0.) {init();}
+		H_SectorDipole(const double s, const double k, const double l, const float eini) :H_Dipole(SDIPOLE,s,k,l,eini){init();}
+		H_SectorDipole(const string& nameE, const double s, const double k, const double l, const float eini) :H_Dipole(nameE,SDIPOLE,s,k,l,eini){init();}
 		~H_SectorDipole() {};
 		//@}
 		H_SectorDipole* clone() const ;
