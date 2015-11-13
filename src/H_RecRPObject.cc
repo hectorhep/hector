@@ -35,33 +35,15 @@ using namespace std;
 
 H_RecRPObject::H_RecRPObject(): emin(0), emax(-1), x1(0), x2(0), y1(0), y2(0), s1(0), s2(0), 
 				txip(NOT_YET_COMPUTED), tyip(NOT_YET_COMPUTED), energy(NOT_YET_COMPUTED), q2(NOT_YET_COMPUTED), pt(NOT_YET_COMPUTED), 
-				thebeam(new H_AbstractBeamLine()),
-				f_1(new TF1("f_1","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				f_2(new TF1("f_2","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				g_1(new TF1("g_1","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				g_2(new TF1("g_2","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				d_1(new TF1("d_1","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				d_2(new TF1("d_2","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				k_1(new TF1("k_1","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				k_2(new TF1("k_2","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				l_1(new TF1("l_1","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				l_2(new TF1("l_2","[0] + [1]*x + [2]*x*x ",emin,emax)) 
+				thebeam(new H_AbstractBeamLine())				
 {}
 
 H_RecRPObject::H_RecRPObject(const float ss1, const float ss2, const H_AbstractBeamLine* beam) : emin(0), emax(-1), x1(0), x2(0), y1(0), y2(0), s1(ss1), s2(ss2), 
 				txip(NOT_YET_COMPUTED), tyip(NOT_YET_COMPUTED), energy(NOT_YET_COMPUTED), q2(NOT_YET_COMPUTED), pt(NOT_YET_COMPUTED), 
-				thebeam(beam->clone()),
-				f_1(new TF1("f_1","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				f_2(new TF1("f_2","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				g_1(new TF1("g_1","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				g_2(new TF1("g_2","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				d_1(new TF1("d_1","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				d_2(new TF1("d_2","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				k_1(new TF1("k_1","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				k_2(new TF1("k_2","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				l_1(new TF1("l_1","[0] + [1]*x + [2]*x*x ",emin,emax)), 
-				l_2(new TF1("l_2","[0] + [1]*x + [2]*x*x ",emin,emax))
-	{if(ss1==ss2) cout<<"<H_RecRPObject> WARNING : detectors are on same position"<<endl;
+				thebeam(beam->clone())
+{
+  if(ss1==ss2)
+    cout<<"<H_RecRPObject> WARNING : detectors are on same position"<<endl;
 }
 
 

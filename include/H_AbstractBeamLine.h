@@ -35,8 +35,7 @@
 
 
 // ROOT #includes
-#include "TMatrix.h"
-#include "TGraph.h"
+#include "TMatrixD.h"
 
 // local #includes
 #include "H_OpticalElement.h"
@@ -46,6 +45,7 @@ using namespace std;
 class H_AbstractBeamLine {
 
 	public:
+		void init(const float, const float);
 		///     Constructors, destructor and operator
 		//@{
 		H_AbstractBeamLine() {init(LENGTH_DEF, BE_DEF);};
@@ -97,12 +97,6 @@ class H_AbstractBeamLine {
 		void calcSequence();
 		/// 	Computes global transport matrix
 		void calcMatrix();
-		/// 	Draws the legend of the elements of the beam
-		void draw(const float xmin =0.85, const float ymin=0.5, const float xmax=1, const float ymax=1) const;
-		/// 	Draws the elements of the beam in the (x,s) plane
-		void drawX(const float, const float, const float scale=1) const;
-		/// 	Draws the elements of the beam in the (y,s) plane
-		void drawY(const float, const float) const;
 		///	Moves an element in the list, reorders the lists and recomputes the transport matrix
 		void moveElement(const string&, const float ); 
 		/// Moves the given element tranversely by given amounts.
@@ -111,42 +105,25 @@ class H_AbstractBeamLine {
 		void tiltElement(const string&, const float, const float);
 		///	Offsets all element in X pos from the start position
 		void offsetElements(const float start, const float offset);
-		///	Draws the beta functions, from MAD
-		//@{
-		TGraph * getBetaX() const;
-		TGraph * getBetaY() const;
-		//@}
-                ///     Draws the dispersion functions, from MAD
-                //@{
-                TGraph * getDX() const;
-                TGraph * getDY() const;
-                //@}
-                ///     Draws the relative position functions, from MAD
-                //@{
-                TGraph * getRelX() const;
-                TGraph * getRelY() const;
-                //@}
-
 
 	private:
+		/// list of all optics elements, including drifts
+		vector<H_OpticalElement*> elements;
         	/// list of matrices, 1 matrix = the transport till the end of each element
-		vector<TMatrix> matrices; 
+		vector<TMatrixD> matrices; 
 	        /// transport matrix for the whole beam
-		TMatrix beam_mat;
-                /// list of all optics elements, including drifts
-                vector<H_OpticalElement*> elements;
+		TMatrixD * beam_mat;
 		/// Orderting method for the vector of H_OpticalElement*
 		struct ordering{ bool operator()(const H_OpticalElement* el1, const H_OpticalElement* el2) const {return (*el1 < *el2);}};
 		// private method for copying the contents of "elements"
 		void cloneElements(const H_AbstractBeamLine&);
 
 	protected:
-		void init(const float, const float);
 		/// total length of the beamline
 		float beam_length;
 		/// initial beam energy
 		float beam_energy;
-	friend std::ostream& operator<< (std::ostream& os, const H_AbstractBeamLine& be);
+		friend std::ostream& operator<< (std::ostream& os, const H_AbstractBeamLine& be);
 };
 
 #endif
