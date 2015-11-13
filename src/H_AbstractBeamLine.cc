@@ -119,7 +119,7 @@ void H_AbstractBeamLine::add(H_OpticalElement * newElement) {
 	return;
 }
 
-const TMatrix H_AbstractBeamLine::getBeamMatrix() const {
+TMatrix H_AbstractBeamLine::getBeamMatrix() const {
 	return beam_mat;
 }
 

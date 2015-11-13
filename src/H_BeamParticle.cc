@@ -102,7 +102,7 @@ H_BeamParticle& H_BeamParticle::operator=(const H_BeamParticle& p) {
 	return *this;
 }
 
-const bool H_BeamParticle::stopped(const H_AbstractBeamLine * beamline) {
+bool H_BeamParticle::stopped(const H_AbstractBeamLine * beamline) {
 	vector<TVectorD>::const_iterator position_i;
 	for(position_i = positions.begin(); position_i < positions.end()-1; position_i++) {
 		const unsigned int pos = position_i-positions.begin();

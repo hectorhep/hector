@@ -164,7 +164,7 @@ void H_OpticalElement::showMatrix() const {
 }
 
 void H_OpticalElement::drawAperture() const {
-	element_aperture->draw();
+	element_aperture->draw(1);
 	return;
 }
 
