@@ -155,9 +155,9 @@ extern TMatrix rdipmat(const float l, const float k, const float eini, const flo
 	float * efmat = new float[MDIM*MDIM];
 	double simp = r*2*sin(l/(2*r))*sin(l/(2*r))/eini;
 	double psy = ke*l/2.;
-	float tefmat[MDIM*MDIM] = {1., tan(psy)*ke, 0., 0., 0., 0.,
+	float tefmat[MDIM*MDIM] = {1., float(tan(psy))*ke, 0., 0., 0., 0.,
 	                            0., 1., 0., 0., 0., 0.,
-	                            0., 0., 1., -tan(psy)*ke, 0., 0.,
+	                            0., 0., 1., -float(tan(psy))*ke, 0., 0.,
 	                            0., 0., 0., 1., 0., 0.,
 	                            0., 0., 0., 0., 1., 0.,
 	                            0., 0., 0., 0., 0., 1. };
@@ -166,7 +166,7 @@ extern TMatrix rdipmat(const float l, const float k, const float eini, const flo
 	             	           r*sin(l/r),cos(l/r),0.,0., 0., 0.,
    		           	           0.,0.,1.,0., 0., 0.,
    	            	           0.,0.,l,1., 0., 0., 
-   	                        simp, sin(l/r)/eini, 0., 0., 1., 0.,
+   	                        float(simp), sin(l/r)/eini, 0., 0., 1., 0.,
    	                        0., 0., 0., 0., 0., 1. };
 	for(int i=0;i<MDIM*MDIM;i++) { 
 		mat[i] = tmat[i];
@@ -264,7 +264,7 @@ extern TMatrix hkickmat(const float l, const float k, const float eini, const fl
                            0.,0.,1.,0.,0.,0.,
                            0.,0.,l ,1.,0.,0.,
                            0.,0.,0.,0.,1.,0.,
-                           l*tan(ke)/2.,ke, 0., 0., 0., 1. 
+                           float(l*tan(ke)/2.),ke, 0., 0., 0., 1. 
 	};
 
 	for(int i=0;i<MDIM*MDIM;i++) { mat[i] = tmat[i]; }
@@ -291,7 +291,7 @@ extern TMatrix vkickmat(const float l, const float k, const float eini, const fl
                            0.,0.,1.,0.,0.,0.,
                            0.,0.,l ,1.,0.,0.,
                            0.,0.,0.,0.,1.,0.,
-                           0.,0.,l*tan(ke)/2.,ke, 0., 1. 
+                           0.,0.,float(l*tan(ke)/2.),ke, 0., 1. 
 	};
 
 	for(int i=0;i<MDIM*MDIM;i++) { mat[i] = tmat[i]; }

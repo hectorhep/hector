@@ -601,12 +601,12 @@ TGraph * H_AbstractBeamLine::getDY() const{
 
 TGraph * H_AbstractBeamLine::getRelX() const{
         const int N = elements.size();
-        float * s = new float[N], * r = new float[N], temp;
+        float * s = new float[N], * r = new float[N]/*, temp*/;
         int i=0, n=N;
 
         vector<H_OpticalElement*>::const_iterator element_i;
         for(element_i = elements.begin(); element_i < elements.end(); element_i++) {
-                temp=(*element_i)->getRelX();
+                //temp=(*element_i)->getRelX();
 		if((*element_i)->getType() != DRIFT) {
 			r[i] = (*element_i)->getRelX();
 			s[i] = (*element_i)->getS();
@@ -627,12 +627,12 @@ TGraph * H_AbstractBeamLine::getRelX() const{
 
 TGraph * H_AbstractBeamLine::getRelY() const{
         const int N = elements.size();
-        float * s = new float[N], * r = new float[N], temp;
+        float * s = new float[N], * r = new float[N]/*, temp*/;
         int i=0, n=N;
 
         vector<H_OpticalElement*>::const_iterator element_i;
         for(element_i = elements.begin(); element_i < elements.end(); element_i++) {
-                temp=(*element_i)->getRelY();
+                //temp=(*element_i)->getRelY();
                 if((*element_i)->getType() != DRIFT) {
                         r[i] = (*element_i)->getRelY();
                         s[i] = (*element_i)->getS();
