@@ -71,24 +71,24 @@ class H_BeamParticle {
 		/// Clears H_BeamParticle::positions and sets the initial one.
 		void setPosition(const double , const double , const double , const double , const double );
 		/// Returns the particle mass [GeV]
-		const double getM() const {return mp;};
+		inline double getM() const {return mp;};
 		/// Returns the particle charge [e]
-		const double getQ() const {return qp;};
+		inline double getQ() const {return qp;};
 		/// Returns the current x coordinate [\f$ \mu \f$m]
-		const double getX() const {return fx;};
+		inline double getX() const {return fx;};
 		/// Returns the current y coordinate [\f$ \mu \f$m]
-		const double getY() const {return fy;};
+		inline double getY() const {return fy;};
 		/// Returns the current s coordinate [m]
-		const double getS() const {return fs;};
+		inline double getS() const {return fs;};
 		/// Returns the current \f$ \theta_x \f$ angular coordinate [\f$ \mu \f$rad]
-		const double getTX() const {return thx;};
+		inline double getTX() const {return thx;};
 		/// Returns the current \f$ \theta_y \f$ angular coordinate [\f$ \mu \f$rad]
-		const double getTY() const {return thy;};
+		inline double getTY() const {return thy;};
 		/// Returns the current particle energy [GeV]
-		const double getE() const {return energy;};
+		inline double getE() const {return energy;};
 		/// Returns all the positions 
-		vector<TVectorD> getPositions() const {return positions;};
-		const bool isPhysical() const {return isphysical;};
+		inline vector<TVectorD> getPositions() const {return positions;};
+		inline bool isPhysical() const {return isphysical;};
 		/// \brief Simulates the emission of a photon in a random direction
 		///
 	        /// For \f$ p_{1} \rightarrow p_{2} \gamma \f$, kinematics imposes that
@@ -117,13 +117,13 @@ class H_BeamParticle {
 		/// Returns the current phase vector of the particle (in H_BeamParticle::positions)
 		const TVectorD * getPosition(const int ) const;
 		/// Prints the properties of the particle
-		void printProperties() const {cout << *this; return;};
+		inline void printProperties() const {cout << *this; return;};
 		/// Prints the phase vector of the particle
 		void printV() const;
 		/// Returns the element where the particle has been stopped
 		const H_OpticalElement * getStoppingElement() const;
 		/// Checks if the particle has been stopped in any element of the beamline
-		const bool stopped(const H_AbstractBeamLine *);
+		bool stopped(const H_AbstractBeamLine *);
 		/// Returns the StopPosition vector
 		inline const TVectorD * getStopPosition() const { return stop_position; };
 		// returns (-1,-1,-1,-1,-1) if not stopped (and then hasstopped is false)

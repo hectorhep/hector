@@ -58,13 +58,13 @@ class H_AbstractBeamLine {
 		///     Adds an element to the beamline
 		void add(H_OpticalElement *);
 		///     Returns the (float) length of the beamline
-  		const float getLength() const { return beam_length;};
+  		inline float getLength() const { return beam_length;};
 		///	Returns the (float) beam energy (in GeV)
-		const float getBeamEnergy() const { return beam_energy;};
+		inline float getBeamEnergy() const { return beam_energy;};
 		///     Returns the (int) number of optics element of the beamline, including drifts
-  		const unsigned int getNumberOfElements() const { return elements.size();}; 
+  		inline unsigned int getNumberOfElements() const { return elements.size();}; 
 		///     Returns the transport matrix for the whole beam
-		const TMatrix getBeamMatrix() const;
+		TMatrix getBeamMatrix() const;
 		///     Returns the transport matrix for the whole beam, for given energy loss/mass/charge
 		const TMatrix getBeamMatrix(const float , const float, const float ) ;
 		///     Returns the transport matrix for a part of the beam from the IP to a given element

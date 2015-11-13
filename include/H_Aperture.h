@@ -53,7 +53,7 @@ class H_Aperture {
 		//virtual void printProperties() const;
 		void printProperties() const;
 		/// Draws the aperture shape
-		virtual void draw(const float scale=1) const {return;};
+		inline virtual void draw(/*const float scale=1*/) const {return;};
 		/// Sets the (x,y) position in [m]
 		void setPosition(const float,const float);
 		/// Checks whether the point is inside the aperture or not
