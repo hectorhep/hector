@@ -123,6 +123,8 @@ class H_OpticalElement {
 		//@}
 		///     Returns the element length
 	        inline double getLength() const { return element_length; };
+		///	Sets the element magnetic strength
+		inline void setK(const double k) { fk = k;};
 		///     Returns the element magnetic strength
 	        inline double getK() const { return fk; };
 		///     Returns the element type, as (int)  or (string)

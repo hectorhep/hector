@@ -34,11 +34,11 @@ const double QP=1;
 /* beam parameters */
    /// beam nominal energy in GeV
 //#define BE  7000.
-const double BE=7000.;
+const double BE=6500.;
    /// beam energy divergence, in GeV
 #define SBE 0.79
    /// beam nominal energy in TeV
-#define BETEV 7.
+#define BETEV 6.5
    /// beam S @ IP
 #define PS 0.
    /// beam X @ IP

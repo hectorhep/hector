@@ -49,6 +49,7 @@ H_AbstractBeamLine::H_AbstractBeamLine(const H_AbstractBeamLine& beamline) {
 	matrices = beamline.matrices;
 	beam_mat = new TMatrix(*(beamline.beam_mat));
 	beam_length = beamline.beam_length;
+        std::cout << "BEAM ENERGY: " << BE << std::endl;
 }
 
 H_AbstractBeamLine& H_AbstractBeamLine::operator=(const H_AbstractBeamLine& beamline) {
