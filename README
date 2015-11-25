@@ -1,26 +1,18 @@
-   * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- *                                                         *
-*                   --<--<--  A fast simulator --<--<--     *
-*                 / --<--<--     of particle   --<--<--     *
-*  ----HECTOR----<                                          *
-*                 \ -->-->-- transport through -->-->--     *
-*                   -->-->-- generic beamlines -->-->--     *
-*                                                           *
-* JINST 2:P09005 (2007)                                     *
-*      X Rouby, J de Favereau, K Piotrzkowski (CP3)         *
-*       http://bit.ly/1IBluZr                               *
-*                                                           *
-* Center for Cosmology, Particle Physics and Phenomenology  *
-*              Universite catholique de Louvain             *
-*                 Louvain-la-Neuve, Belgium                 *
- *                                                         *
-   * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+Release note:
 
 ---- Hector the simulator ----
-hector_devel@cp3.phys.ucl.ac.be 
-jerome.defavereau@uclouvain.be 
-xavier.rouby@cern.ch
-laurent.forthomme@cern.ch
+A fast simulator of particles through generic beamlines.
+J. de Favereau, X. Rouby
+
+http://www.fynu.ucl.ac.be/hector.html
+Centre de Physique des Particules et de Phénoménologie (CP3)
+Université Catholique de Louvain (UCL)
+
+new and correct mailing list address:
+  cp3_hector_devel@listes.uclouvain.be
+or
+  xavier.rouby@cern.ch
+  jerome.defavereau@uclouvain.be
 
 Requirements:
 	- ROOT 4.xx or later, recent g++ (not tested before 3.2.xx)
@@ -29,77 +21,32 @@ Optional package :
 	- Pythia 6
 
 Tested environments :
-	- Linux (Kubuntu / Fedora / SLC)
+	- Linux
 	- Windows/Cygwin
 	- Mac OS X
 
-================================================================================
-Note :
-	On Fedora (using SELinux security system), if you experience some problems at 
-	ROOT startup, concerning libHector_routines.so, i.e. :
-		dlopen error: ./lib/libHector.so: cannot restore segment prot after reloc: Permission denied
-		Load Error: Failed to load Dynamic link library ./lib/libHector.so
-	Then you should try this :
-		chcon -t textrel_shlib_t ./lib/libHector_routines.so
-================================================================================
+** Version 1.3.4 ** 07/05/2009
+        Extension of the CMSSW-dedicated release (namely 1.3.3)
+        New features: removing useless stuffs for CMSSW
+	  - remove all routines
+	  - removing all instances of TGraph, TGraphErrors, TCanvas
 
-** Version 1.5.3 (08/05/2015)
-	Beam initial energy is now an argument to provide to the H_BeamLine
-	object (i.e. not hardcoded anymore, apart from its default value,
-	 BE_DEF = 7000 GeV, as defined in H_Parameters.h)
-
-** Version 1.5.2 (17/02/2009)
-	switched all calls to "static const float pi" to TMath::Pi() 
-	operator= in H_BeamLine.cc corrected
-	Makefile : -fPIC option added in ROOTCFLAGS variable
-
-** Version 1.5.1 (16/02/2009)
-	H_BeamParticle, H_Beam : smear methods allow an external TRandom*
-	Some cleaning in the class methods; remove code duplication
-	H_Aperture and derivated classes: constructor slightly optimised ;
-	no more #defines ; operator<< now every call to printProperties()
-	 can be replaced by a stream:
-		obj.printProperties()    is the same as     cout << obj;
-
-** Version 1.5 (15/02/2009)
-	H_RecRPObject is now not anymore leaking memory!
-	Compatibility is ensured for all routines using H_RecRPObject
-	Remove the misleading method
-		H_AbstractBeamLine::add(const H_OpticalElement&)
-
-** Version 1.4.2 (15/02/2009)
-	putting the final banner in all files
-
-** Version 1.4.1 (03/02/2009)
-	Systematic check for memory leaks with valgrind in the classes (actually,
-	using Delphes)
-	All classes but H_RecRPObject should be ok
-
-** Version 1.4.0 (03/10/2007)
-	Miscellaneous
-	partial update of H_RecRPObject prevent from running
-	routines/H_Reconstruction.cpp properly
-	remove all TView and 3D stuffs from H_BeamParticle class
-
-** ** 08/08/2007
+** Version 1.3.3 ** 24/02/2009
+	In parallel to recent developments (now 1_5_2 is out), this version has been released
+	for the needs of CMSSW.
 	New features :
-		- All #include statements are checked, as ROOT v5.16 is
-		  less permissive
-		- TView changes from v5.16 ! added comment in
-		  src/H_BeamParticle for proper code
+		- interface to external TRandom* calls in H_BeamParticle smearing functions
 
-** Version 1.3 (09/01/2007)
+
+** Version 1.3 ** 09/01/2007
 	New features :
-		- Bug removal in kicker implementation. Now the kick is done in the middle
-		  of the kicker.
-		- Hector is now compatible with MAD-X within 0.05 µm in the positioning of
-		  beamline protons.
+		- Bug removal in kicker implementation. Now the kick is done in the middle of the kicker. 
+		  Hector is now compatible with MAD-X within 0.05 µm in the positioning of beamline protons.
 		- H_BeamLine::getIPProperties()
 
-** Version 1.2 (14/12/2006)
+** Version 1.2 ** 14/12/2006
 	New features :
-		- new revision of the Makefile. Allows the compilation of any routine file
-		  containing a 'main(...)' function.
+		- new revision of the Makefile. Allows the compilation of any routine file containing a 'main(...)' function.
 		  e.g. for "routines/test.cpp", use "make test".
 		  Builds the tarball of the sources using "make tar".
 		  Can be now easily adapted for Mac OS X
@@ -110,8 +57,7 @@ Note :
 	New features :
 		- Bug removal in chromaticity correction for quadrupoles
 		- propagation of non-proton particles
-		- "_RELATIVE_ENERGY_ and _ENERGY_SDIP_ #defines" are replaced by
-		  "extern bool relative_energy"
+		- "_RELATIVE_ENERGY_ and _ENERGY_SDIP_ #defines" are replaced by "extern bool relative_energy"
 
 
 ** Version 1.0 ** before :)
