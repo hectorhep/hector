@@ -120,9 +120,13 @@ endif
 # ifneq checks if you are not doing "make clean". If so, you do not need to build $(DEPENDENCIES) as you'll delete it just afterwards.
 # ifneq also checks if your are not doing "make depend", as you do not have to build twice the dependence file.
 
+$(OBJ):
+	@mkdir $(OBJ)
+$(LIB):
+	@mkdir $(LIB)
 ###### Suffix rules (Tells how to build a.o file from a.cc file)
 # Building the object files from .cc files
-%.o : %.cc
+%.o : %.cc | $(OBJ)
 	@echo Making $@
 	@g++ $< -c $(ROOTCFLAGS) -I$(INC) $(WARNINGS) -g -o $@ $(OPTIMIZE)
 	@mv -f $@ $(OBJ)
@@ -133,7 +137,7 @@ endif
 # rem : the last line removes the a.d file created with a.o
 
 # Building the object files from .cpp files, which will be included in $(ROUTINESLIBRARY)
-%.o : %.cpp
+%.o : %.cpp | $(OBJ)
 	@echo Making $@
 #	@g++ $< -c $(ROOTCFLAGS) -I$(INC) -I$(ROUTINESINC) $(WARNINGS) -o $@ $(OPTIMIZE)
 	@g++ $< -c $(ROOTCFLAGS) -I$(INC) $(WARNINGS) -o $@ $(OPTIMIZE)
@@ -150,7 +154,7 @@ endif
 	@rm -f $@.d
 
 # ----- make libHector.so -----
-$(LIBFULLNAME): $(OBJECTS)
+$(LIBFULLNAME): $(OBJECTS) | $(LIB)
 	@echo Making $@ 
 	@g++ -shared $(ROOTLIBS) $(WARNINGS) -o $@ -Wl,-soname,$@ $(addprefix $(OBJ),$(OBJECTS)) $(OPTIMIZE)
 	@strip -s $@

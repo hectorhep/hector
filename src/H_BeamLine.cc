@@ -39,6 +39,7 @@
 #include "H_VerticalKicker.h"
 #include "H_RectangularCollimator.h"
 #include "H_Marker.h"
+#include "H_RecRPObject.h"
 
 using namespace std;
 
@@ -120,6 +121,7 @@ double* H_BeamLine::getIPProperties() {
 	temp[1] = ipy;
 	temp[2] = iptx;
 	temp[3] = ipty;
+	H_RecRPObject o(); //FIXME not yet used ; to enable compilation...
 	return temp;
 }
 
