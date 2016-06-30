@@ -63,7 +63,7 @@ DEPENDENCIES= Dependencies
 # TARBALL tar.bz file containing the source code.
 TARBALL= $(LIBRARY)$(VERSION).tbz
 # WARNINGS  Warning flags for g++
-WARNINGS= -Wall -Wno-deprecated -Woverloaded-virtual
+WARNINGS= -Wall -Wno-deprecated -Woverloaded-virtual -Wno-misleading-indentation
 # OPTIMIZE= -msse2 -mfpmath=sse -O3 
 OPTIMIZE=
 # OPTIMIZE= -pg -fprofile-arcs -ftest-coverage
@@ -88,9 +88,13 @@ endif
 # ifneq checks if you are not doing "make clean". If so, you do not need to build $(DEPENDENCIES) as you'll delete it just afterwards.
 # ifneq also checks if your are not doing "make depend", as you do not have to build twice the dependence file.
 
+$(OBJ):
+	@mkdir $(OBJ)
+$(LIB):
+	@mkdir $(LIB)
 ###### Suffix rules (Tells how to build a.o file from a.cc file)
 # Building the object files from .cc files
-%.o : %.cc
+%.o : %.cc | $(OBJ)
 	@echo Making $@
 	$(CXX) $(CXXFLAGS) $< -c $(ROOTCFLAGS) $(WARNINGS) -I$(ROOTSYS)/include -I$(INC) -g -o $@ $(OPTIMIZE)
 	@mv -f $@ $(OBJ)
@@ -100,14 +104,25 @@ endif
 # rem : the macro $< returns the first dependency
 # rem : the last line removes the a.d file created with a.o
 
+# Building the object files from .cpp files, which will be included in $(ROUTINESLIBRARY)
+%.o : %.cpp | $(OBJ)
+	@echo Making $@
+#	@g++ $< -c $(ROOTCFLAGS) -I$(INC) -I$(ROUTINESINC) $(WARNINGS) -o $@ $(OPTIMIZE)
+	@g++ $< -c $(ROOTCFLAGS) -I$(INC) $(WARNINGS) -o $@ $(OPTIMIZE)
+	@mv -f $@ $(OBJ)
+	@rm -f $(addsuffix .d, $(basename $@))
+
+
 # Building the executable files from .cpp files
 % : %.cpp $(LIBFULLNAME)
 	@echo Compiling $@
-	$(CXX) $(CXXFLAGS) $< -g -o $@ $(ROOTLIBS) $(WARNINGS) $(ROOTCFLAGS) -L$(LIB) -l$(LIBRARY) -I$(INC) $(OPTIMIZE)
+#	@g++ $< -o $@ $(ROOTLIBS) $(WARNINGS) $(ROOTCFLAGS) -L$(LIB) -l$(LIBRARY) -l$(ROUTINESLIBRARY) -I$(INC) -I$(ROUTINESINC) $(OPTIMIZE)
+	@g++ $< -o $@ $(ROOTLIBS) $(WARNINGS) $(ROOTCFLAGS) -L$(LIB) -l$(LIBRARY) -I$(INC) $(OPTIMIZE) -Wl,-Rlib/
+	@cp $(LIB)$(LIBFULLNAME) .
 	@rm -f $@.d
 
 # ----- make libHector.so -----
-$(LIBFULLNAME): $(OBJECTS)
+$(LIBFULLNAME): $(OBJECTS) | $(LIB)
 	@echo Making $@ 
 	@case `uname` in \
 	  Darwin) \

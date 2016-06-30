@@ -88,6 +88,7 @@ class H_BeamLineParser {
 		void setProperties(istream& , const unsigned int );
 		void printProperties() const;
 		string name, apertype, keyword, parent;
+		string dummy;
 		/// Optical element longitudinal (co-moving) coordinate.
 		double s;
 		/// Length of the element.

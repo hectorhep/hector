@@ -32,6 +32,7 @@
 #include "H_VerticalKicker.h"
 #include "H_RectangularCollimator.h"
 #include "H_Marker.h"
+#include "H_RecRPObject.h"
 
 using namespace std;
 
@@ -78,8 +79,8 @@ void H_BeamLine::findIP(const string filename, const string ipname) {
 		if (! tabfile.is_open()) cout << "\t ERROR: I Can't open \"" << filename << "\"" << endl;
 	bool found = false;
 	int N_col=0;
-	string headers[40];  // table of all column headers
-	int header_type[40]; // table of all column types
+	string headers[100];  // table of all column headers
+	int header_type[100]; // table of all column types
 
 	string temp_string;
 	H_BeamLineParser e;
@@ -92,6 +93,7 @@ void H_BeamLine::findIP(const string filename, const string ipname) {
 		// gets the features of each element
 		if (found) {
 			for (int col=0; col < N_col; col++) e.setProperties(curstring,header_type[col]);
+			//e.printProperties();
 			if(strstr(e.name.c_str(),ipname.c_str())) {
 				ips = e.s; //e.printProperties();
 				ipx = e.x;
@@ -123,6 +125,7 @@ double* H_BeamLine::getIPProperties() {
 	temp[1] = ipy;
 	temp[2] = iptx;
 	temp[3] = ipty;
+	H_RecRPObject o(); //FIXME not yet used ; to enable compilation...
 	return temp;
 }
 
@@ -133,8 +136,8 @@ void H_BeamLine::fill(const string filename) {
 
 
 void H_BeamLine::fill(const string filename, const int dir, const string ipname) {
-	string headers[40];  // table of all column headers
-	int header_type[40]; // table of all column types
+	string headers[100];  // table of all column headers
+	int header_type[100]; // table of all column types
 	findIP(filename,ipname);
 	ifstream tabfile(filename.c_str());
 		if (! tabfile.is_open()) cout << "\t ERROR: I Can't open \"" << filename << "\"" << endl;
@@ -162,9 +165,7 @@ void H_BeamLine::fill(const string filename, const int dir, const string ipname)
         // gets the features of each element
 		if (found) {
 			// reads each column
-			for (int col=0; col < N_col; col++) {
-				e.setProperties(curstring,header_type[col]);
-			}
+			for (int col=0; col < N_col; col++) { e.setProperties(curstring,header_type[col]); }
 			//e.printProperties();
 			
 			type =0; //init
@@ -238,7 +239,7 @@ void H_BeamLine::fill(const string filename, const int dir, const string ipname)
 			found = true;
 
 			// reads the title of each column
-			while(curstring.good()) { curstring >> headers[N_col]; if(headers[N_col]!="*") N_col++;}
+			while(curstring.good()) { curstring >> headers[N_col]; if(headers[N_col]!="*") N_col++; }
 			if(VERBOSE) cout << N_col << " columns identified" << endl;
 
 			// identifies each column
@@ -247,7 +248,6 @@ void H_BeamLine::fill(const string filename, const int dir, const string ipname)
 			}
 			getline(tabfile,temp_string);
 		} // if temp_string <-> "K0L"
-
 	} // while (!eof)
 	tabfile.close();
 }

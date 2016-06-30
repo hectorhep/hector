@@ -32,6 +32,11 @@
 #include "TPythia6.h"
 #include "TRandom.h"
 #endif
+#ifdef _include_pythia8_
+#include "TPythia8.h"
+#include "TParticle.h"
+#endif
+
 // local #includes
 #include "H_OpticalElement.h"
 #include "H_BeamParticle.h"
@@ -304,6 +309,32 @@ void H_BeamParticle::doInelastic() {
 	positions.clear();
 	addPosition(fx,thx,fy,thy,fs);
 #endif
+#ifdef _include_pythia8_
+	TPythia8 gen;
+	// select AB -> AX process 
+        //gen.SetParameter("MSEL",0);
+        //gen.SetParameter("MSUB(93)",1); // soft diffraction
+        gen.ReadString("SoftQCD:singleDiffractive = on");
+	// no showers/decays
+	//gen.SetParameter("MSTP(111)",0); // no hadronization and no decays
+	gen.ReadString("HadronLevel:all = off");
+	// no printouts
+	//gen.SetParameter("MSTP(122)",0); // information on where in phase space a maximum has been violated has been reduced (0 : not at all; 1 : only when error (i.e. not for warnings); 2 : always)
+	//gen.SetParameter("MSTU(12)",0); // logo
+	// generator initialization
+        gen.Initialize(2212,2212,14000);
+	// event generation
+	gen.GenerateEvent();
+	// list particles
+//	gen.Pylist(1);
+	//gen.EventListing();
+	// 4 = diffractive proton
+	thx = thx + URAD*atan(gen.GetParticle(4)->Px()/gen.GetParticle(4)->Pz());
+	thy = thy + URAD*atan(gen.GetParticle(4)->Py()/gen.GetParticle(4)->Pz());
+	energy = gen.GetParticle(4)->Energy();
+	positions.clear();
+	addPosition(fx,thx,fy,thy,fs);
+#endif
 	return;
 }
 
@@ -480,13 +511,13 @@ void H_BeamParticle::computePath(const H_AbstractBeamLine * beam) {
 // should be removed later, to keep only computePath(const H_AbstractBeamLine & , const bool)
 void H_BeamParticle::computePath(const H_AbstractBeamLine * beam, const bool NonLinear) {
 	TMatrixD temp_mat(MDIM,MDIM);
-	double temp_x, temp_y, temp_s, temp_tx, temp_ty;
+	double temp_x, temp_y, /*temp_s,*/ temp_tx, temp_ty;
 
 	temp_x = (positions.front())[INDEX_X];
         temp_tx = (positions.front())[INDEX_TX];
         temp_y = (positions.front())[INDEX_Y];
         temp_ty = (positions.front())[INDEX_TY];
-        temp_s = (positions.front())[INDEX_S];
+        //temp_s = (positions.front())[INDEX_S];
 
 		double vec[MDIM] = {temp_x/URAD, tan(temp_tx/URAD), temp_y/URAD, tan(temp_ty/URAD),energy,1};
 
@@ -530,13 +561,13 @@ void H_BeamParticle::computePath(const H_AbstractBeamLine * beam, const bool Non
 
 void H_BeamParticle::computePath(const H_AbstractBeamLine & beam, const bool NonLinear) {
 	TMatrixD temp_mat(MDIM,MDIM);
-	double temp_x, temp_y, temp_s, temp_tx, temp_ty;
+	double temp_x, temp_y, /*temp_s,*/ temp_tx, temp_ty;
 
 	temp_x = (positions.front())[INDEX_X];
         temp_tx = (positions.front())[INDEX_TX];
         temp_y = (positions.front())[INDEX_Y];
         temp_ty = (positions.front())[INDEX_TY];
-        temp_s = (positions.front())[INDEX_S];
+        //temp_s = (positions.front())[INDEX_S];
 
 		double vec[MDIM] = {temp_x/URAD, tan(temp_tx/URAD), temp_y/URAD, tan(temp_ty/URAD),energy,1};
 

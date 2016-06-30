@@ -67,7 +67,15 @@ const double BE=6500.;
 //#define D   120000.
 const double D=120000.;
 	/// half crossing angle at IP [\f$ \mu \f$RAD]
-#define CRANG 142.5 
+const double CRANG=142.5;
+
+// local defines, used in H_BeamParticle & H_OpticalElements
+enum {INDEX_X=0, INDEX_TX, INDEX_Y, INDEX_TY, INDEX_S, LENGTH_VEC};
+// (x,theta_x,y,theta_y,s)
+
+/// include Pythia libraries ? (not included on some ROOT installations)
+//#define _include_pythia_
+//#define _include_pythia8_
 
 /* roman pots parameters */
    /// granularity in X position

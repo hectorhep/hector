@@ -72,13 +72,13 @@ class H_BeamParticle {
 		/// Clears H_BeamParticle::positions and sets the initial one.
 		void setPosition(const double , const double , const double , const double , const double );
 		/// Returns the particle mass [GeV]
-		double getM() const {return mp;};
+		inline double getM() const {return mp;};
 		/// Returns the particle charge [e]
-		double getQ() const {return qp;};
+		inline double getQ() const {return qp;};
 		/// Returns the current x coordinate [\f$ \mu \f$m]
-		double getX() const {return fx;};
+		inline double getX() const {return fx;};
 		/// Returns the current y coordinate [\f$ \mu \f$m]
-		double getY() const {return fy;};
+		inline double getY() const {return fy;};
 		/// Returns the current s coordinate [m]
 		inline double getS() const {return fs;};
 		/// Returns the current \f$ \theta_x \f$ angular coordinate [\f$ \mu \f$rad]
@@ -88,8 +88,8 @@ class H_BeamParticle {
 		/// Returns the current particle energy [GeV]
 		inline double getE() const {return energy;};
 		/// Returns all the positions 
-		vector<TVectorD> getPositions() const {return positions;};
-		bool isPhysical() const {return isphysical;};
+		inline vector<TVectorD> getPositions() const {return positions;};
+		inline bool isPhysical() const {return isphysical;};
 		/// \brief Simulates the emission of a photon in a random direction
 		///
 	        /// For \f$ p_{1} \rightarrow p_{2} \gamma \f$, kinematics imposes that
