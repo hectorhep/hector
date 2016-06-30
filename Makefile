@@ -75,7 +75,7 @@ LIBFULLNAME = $(addprefix lib,$(addsuffix $(LEXT),$(LIBRARY)))
 ROUTINESLIBFULLNAME = $(addprefix lib,$(addsuffix $(LEXT),$(ROUTINESLIBRARY))) 
 # ROOTCFLAGS & ROOTLIBS  flags needed from ROOT for the compilation command
 ROOTCFLAGS= -fPIC $(shell root-config --cflags) 
-ROOTLIBS= $(shell root-config --libs --glibs) #-lPythia6 -lEG -lEGPythia6
+ROOTLIBS= $(shell root-config --libs --glibs) #-lEGPythia8 #-lPythia6 -lEG -lEGPythia6
 # HEADERS  List of .h files, without path
 HEADERS= $(notdir $(wildcard $(INC)*h))
 ROUTINESHEADERS = $(notdir $(wildcard $(ROUTINESINC)*h))
@@ -92,7 +92,7 @@ ROUTINESDEPENDENCIES= $(DEPENDENCIES)_routines
 # TARBALL tar.bz file containing the source code.
 TARBALL= $(LIBRARY)$(VERSION).tbz
 # WARNINGS  Warning flags for g++
-WARNINGS= -Wall -Wno-deprecated -Woverloaded-virtual
+WARNINGS= -Wall -Wno-deprecated -Woverloaded-virtual -Wno-misleading-indentation
 # OPTIMIZE= -msse2 -mfpmath=sse -O3 
 OPTIMIZE= 
 #OPTIMIZE= -pg -g -fprofile-arcs -ftest-coverage
@@ -149,7 +149,7 @@ $(LIB):
 % : %.cpp $(LIBFULLNAME) $(ROUTINESLIBFULLNAME)
 	@echo Compiling $@
 #	@g++ $< -o $@ $(ROOTLIBS) $(WARNINGS) $(ROOTCFLAGS) -L$(LIB) -l$(LIBRARY) -l$(ROUTINESLIBRARY) -I$(INC) -I$(ROUTINESINC) $(OPTIMIZE)
-	@g++ $< -o $@ $(ROOTLIBS) $(WARNINGS) $(ROOTCFLAGS) -L$(LIB) -l$(LIBRARY) -I$(INC) $(OPTIMIZE)
+	@g++ $< -o $@ $(ROOTLIBS) $(WARNINGS) $(ROOTCFLAGS) -L$(LIB) -l$(LIBRARY) -I$(INC) $(OPTIMIZE) -Wl,-Rlib/
 	@cp $(LIB)$(LIBFULLNAME) .
 	@rm -f $@.d
 

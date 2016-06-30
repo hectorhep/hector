@@ -93,15 +93,10 @@ void display_nonip(double via = 100., float length=500., string beam1file="data/
 	return;
 }
 
-int main() {
-	display_nonip(100);
-	return 0;
-}
-
 /// \brief Shows both LHC beams aside, from the top and from the side
 /// <BR> Usage : display_lhcbeams(500.,"data/LHCB1IR1.tfs"       , "data/LHCB2IR1.tfs"       , "IP1")
 /// <BR> Usage : display_lhcbeams(500.,"data/LHCB1IR5_v6.500.tfs", "data/LHCB2IR5_v6.500.tfs", "IP5")
-void display_lhcbeams(float length=500., string beam1file="data/LHCB1IR5_v6.500.tfs", string beam2file="data/LHCB2IR5_v6.500.tfs", char * ipname = "IP5") {
+void display_lhcbeams(float length=500., string beam1file="data/LHCB1IR5_v6.500.tfs", string beam2file="data/LHCB2IR5_v6.500.tfs", char * ipname = "IP5", char* save_filename="") {
 	/// @param length : maximum of the s axis
 	/// @param beam1file : source file for beam 1 optics
 	/// @param beam2file : source file for beam 2 optics
@@ -198,6 +193,8 @@ void display_lhcbeams(float length=500., string beam1file="data/LHCB1IR5_v6.500.
 	beam_profile_y->GetYaxis()->SetTitleOffset(0.75);
    	beamline2->drawY(beam_profile_y->GetYaxis()->GetXmin(),beam_profile_y->GetYaxis()->GetXmax());
 	beam_profile_y->Draw("L+");
+
+        if (save_filename!="") ccc->SaveAs(save_filename);
 
 	cout << endl << stopped_number_b1 << " particles have been stopped in beam 1" << endl;
 	cout << endl << stopped_number_b2 << " particles have been stopped in beam 2" << endl;
@@ -486,3 +483,13 @@ void display_beamprofile(float s, string filename="data/LHCB1IR5_v6.500.tfs", ch
 	}
 
 }
+
+int main() {
+//	display_nonip(100);
+//	display_lhcbeams(500., "data/LHCB1IR5_v6.500.tfs", "data/LHCB2IR5_v6.500.tfs", "IP5");
+	display_lhcbeams(800., "data/LHCB1IR5_v6.500.tfs", "data/twiss/twiss_coll0p4m_ir5b2_6p5tev.tfs", "IP5", "old_optics.png");
+	display_lhcbeams(800., "data/twiss/twiss_coll0p4m_ir5b1_6p5tev.tfs", "data/twiss/twiss_coll0p4m_ir5b2_6p5tev.tfs", "IP5", "new_optics.png");
+//	display_beamprofile(500., "data/twiss/twiss_coll0p4m_ir5b1_6p5tev.tfs", "IP5", 1, "test", 1000, -1, true, "test.png");
+	return 0;
+}
+

@@ -37,6 +37,10 @@
 #ifdef _include_pythia_
 #include "TPythia6.h"
 #endif
+#ifdef _include_pythia8_
+#include "TPythia8.h"
+#include "TParticle.h"
+#endif
 
 // local #includes
 #include "H_OpticalElement.h"
@@ -322,6 +326,32 @@ void H_BeamParticle::doInelastic() {
 	thx = thx + URAD*atan(gen.GetP(5,1)/gen.GetP(5,3));
 	thy = thy + URAD*atan(gen.GetP(5,2)/gen.GetP(5,3));
 	energy = gen.GetP(5,4);
+	positions.clear();
+	addPosition(fx,thx,fy,thy,fs);
+#endif
+#ifdef _include_pythia8_
+	TPythia8 gen;
+	// select AB -> AX process 
+        //gen.SetParameter("MSEL",0);
+        //gen.SetParameter("MSUB(93)",1); // soft diffraction
+        gen.ReadString("SoftQCD:singleDiffractive = on");
+	// no showers/decays
+	//gen.SetParameter("MSTP(111)",0); // no hadronization and no decays
+	gen.ReadString("HadronLevel:all = off");
+	// no printouts
+	//gen.SetParameter("MSTP(122)",0); // information on where in phase space a maximum has been violated has been reduced (0 : not at all; 1 : only when error (i.e. not for warnings); 2 : always)
+	//gen.SetParameter("MSTU(12)",0); // logo
+	// generator initialization
+        gen.Initialize(2212,2212,14000);
+	// event generation
+	gen.GenerateEvent();
+	// list particles
+//	gen.Pylist(1);
+	//gen.EventListing();
+	// 4 = diffractive proton
+	thx = thx + URAD*atan(gen.GetParticle(4)->Px()/gen.GetParticle(4)->Pz());
+	thy = thy + URAD*atan(gen.GetParticle(4)->Py()/gen.GetParticle(4)->Pz());
+	energy = gen.GetParticle(4)->Energy();
 	positions.clear();
 	addPosition(fx,thx,fy,thy,fs);
 #endif

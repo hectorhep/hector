@@ -85,7 +85,6 @@ void H_BeamLineParser::init() {
 }
 
 void H_BeamLineParser::setProperties(istream& input, const unsigned int col_type) {
-
 	switch(col_type) {
 		case   MADX_NAME:    input >> name; break;
 		case   MADX_KEYWORD: input >> keyword; break;
@@ -117,7 +116,7 @@ void H_BeamLineParser::setProperties(istream& input, const unsigned int col_type
 		case   MADX_APER_3:  input >> aper_3; break;
 		case   MADX_APER_4:  input >> aper_4; break;
  		case   MADX_PARENT:  input >> parent; break;
-		default:break;
+		default: input >> dummy; break;
 	} // switch
 }
 
@@ -125,6 +124,7 @@ void H_BeamLineParser::setProperties(istream& input, const unsigned int col_type
 void H_BeamLineParser::printProperties() const {
 //KEYWORD	NAME	PARENT	L	K0L	K1L	K2L	K3L	S	BETX	BETY	DX	DY	XC	YC	ALFX	ALFY	MUX	MUY	DPX	PXC	PYC
 	cout << " keyword = " << keyword;
+	cout << " type = " << apertype;
 	cout << " name = " << name;
 	cout << " l = " << l;
 	cout << " k0l = " << k0l;

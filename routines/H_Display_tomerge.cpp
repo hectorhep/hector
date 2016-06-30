@@ -88,6 +88,7 @@ void display_nonip(double via = 100., float length=500., string beam1file="data/
 	can->cd();
 	gPad->SetGrid();
 	beam_profile_x1->Draw("al");
+        can->SaveAs("test.png");
 
 	return;
 }

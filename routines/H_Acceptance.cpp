@@ -124,7 +124,7 @@ TH1F* acceptance_element(H_AbstractBeamLine * beamline, const string element_nam
 		for (unsigned int e_i=0; e_i<Ne; e_i++) {
 			H_Beam mybeam;
 			mybeam.setPosition(PX,PY,crang_sign*CRANG,0.,0.);
-			mybeam.setE(BE);
+			mybeam.setE(BE_DEF);
 			if(drawlines) {
 				mybeam.setDE(0);
 				mybeam.setDX(0);
@@ -207,7 +207,7 @@ TH1F* acceptance_element(H_AbstractBeamLine * beamline, const string element_nam
 	// shows the beam path, just in case
 	if (show_path) {
 		H_BeamParticle p1;
-		p1.setE(BE);
+		p1.setE(BE_DEF);
 		p1.setPosition(p1.getX()+PX,p1.getY()+PY,p1.getTX()+crang_sign*CRANG,p1.getTY(),0.);
 		p1.computePath(beamline,NonLinear);
 		TGraph * ppath = p1.getPath(0,kGreen);
@@ -227,8 +227,8 @@ void acceptance_fluence(float rpos = 220., float deltax = 2000., string file = "
 	/// @param N is the number of particles to propagate (ideal one : 10^6)
 	/// @param save : boolean
 
-#ifndef _include_pythia_
-	cout << "You are not running Pythia in Hector (_include_pythia_ is not defined)!\n";
+#if !defined(_include_pythia_) && !defined(_include_pythia8_)
+	cout << "You are not running Pythia in Hector (_include_pythia(8)_ is not defined)!\n";
 	return;
 #endif
 
@@ -269,7 +269,7 @@ void acceptance_fluence(float rpos = 220., float deltax = 2000., string file = "
         H_BeamLine* beam = new H_BeamLine(side,rpos+5);
 
         beam->fill(file);
-        H_RomanPot * rp = new H_RomanPot("RP",rpos,deltax);
+        H_RomanPot * rp = new H_RomanPot("RP",rpos,deltax,BE_DEF);
         beam->add(rp);
         beam->offsetElements(140,-0.08);
         beam->offsetElements(146,-0.097);
@@ -321,7 +321,7 @@ H_AbstractBeamLine * createBeamline(float rp_pos, float rp_x, string filename, i
         beamline->fill(filename);
 	char title[30];
 	sprintf(title,"RP %dm %dum",(int)rp_pos,(int)rp_x);
-        H_RomanPot * rp = new H_RomanPot(title,rp_pos,rp_x);
+        H_RomanPot * rp = new H_RomanPot(title,rp_pos,rp_x,BE_DEF);
         rp_name = title;
         beamline->add(rp);
         beamline->offsetElements(140,-1*(direction)*0.080);
@@ -372,7 +372,7 @@ void acceptance_beamline(float rp_pos, float rp_x, string filename="data/LHCB1IR
 
 	for(unsigned int log10x_i=0; log10x_i<Ne; log10x_i++) log10x[log10x_i]=log10x_min + (log10x_max - log10x_min)/(float)Ne*(log10x_i+0.5);
 	for(unsigned int log10t_i=0; log10t_i<Nq; log10t_i++) log10t[log10t_i]=log10t_min + (log10t_max - log10t_min)/(float)Nq*(log10t_i+0.5);
-        for(unsigned int e_i=0; e_i<Ne; e_i++) { energies[e_i]= BE * pow(10,log10x[e_i]); }
+        for(unsigned int e_i=0; e_i<Ne; e_i++) { energies[e_i]= BE_DEF * pow(10,log10x[e_i]); }
         for(unsigned int q2_i=0; q2_i<Nq; q2_i++) {q2s[q2_i]=  -1 * pow(10,log10t[q2_i]); }
 	TMultiGraph * tm =0;
 
@@ -793,7 +793,8 @@ int main() {
 	cout << "Ca commence" << endl;
 //	acceptance_rp(420,3550,"data/LHCB1IR5_v6.500.tfs",1,-1,10,0,150,10,-3,0,10,1,"robert","robo.eps");
 //	acceptance_rp_1D(220.,2000.,"data/LHCB1IR5_v6.500.tfs", 1,-1,1000,0.,1400.,30,-0.1,-1.,1," for beam 1","roboo.eps");
-	acceptance_basiccheck(0,1000,10000);
+	acceptance_fluence(220., 2000., "data/LHCB1IR5_v6.500.tfs", 1, 1000, true);
+//	acceptance_basiccheck(0,1000,10000);
 	cout << "C'est fini" << endl;
 	return 0;
 }
