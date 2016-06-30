@@ -1,20 +1,13 @@
-  /* * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                         *
-*                   --<--<--  A fast simulator --<--<--     *
-*                 / --<--<--     of particle   --<--<--     *
-*  ----HECTOR----<                                          *
-*                 \ -->-->-- transport through -->-->--     *
-*                   -->-->-- generic beamlines -->-->--     *
-*                                                           *
-* JINST 2:P09005 (2007)                                     *
-*      X Rouby, J de Favereau, K Piotrzkowski (CP3)         *
-*       http://www.fynu.ucl.ac.be/hector.html               *
-*                                                           *
-* Center for Cosmology, Particle Physics and Phenomenology  *
-*              Universite catholique de Louvain             *
-*                 Louvain-la-Neuve, Belgium                 *
- *                                                         *
-   * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*
+---- Hector the simulator ----
+   A fast simulator of particles through generic beamlines.
+   J. de Favereau, X. Rouby ~~~ hector_devel@cp3.phys.ucl.ac.be
+
+        http://www.fynu.ucl.ac.be/hector.html
+
+   Centre de Physique des Particules et de Phénoménologie (CP3)
+   Université Catholique de Louvain (UCL)
+*/
 
 /// \file H_TransportMatrices.cc
 /// \brief Includes the implementation of every transport matrix.
@@ -35,24 +28,24 @@ bool relative_energy = 1;
 // caution : do not change particle mass, not implemented yet.
 
 extern double omega(const double k, const double l) {
-		// [l] = [m] and [k] = [1/m^2] for quadrupoles
+		// [l] = [m] and [k] = [1/m�] for quadrupoles
 		// [omega] = [1]
 	return sqrt(fabs(k))*l;
 }
 
 extern double radius(const double k) {
-		// [k] = [1/m^2] for quadrupoles
+		// [k] = [1/m�] for quadrupoles
 		// [k] = [1/m]  for dipoles
 		// [radius(k)] = [m]
-	if(k==0 && VERBOSE) cout<<"<H_TransportMatrices> ERROR : Dipole has no effect : results will be corrupted"<<endl; 
+	if(k==0 && VERBOSE) cout<<"ERROR : Dipole has no effect : results will be corrupted"<<endl; 
 	// this is protected by the "if(k==0) -> driftmat" in every matrix below (ex vquatmat)
 	return (k==0) ? 1 : 1/k;
 }
 
-extern void printMatrix(TMatrix TMat) {
+extern void printMatrix(TMatrix * TMat) {
 	char temp[20];
 	float * el = new float[MDIM*MDIM];
-	el = (TMat.GetMatrixArray());
+	el = (TMat->GetMatrixArray());
 
 	cout << endl << "\t";
 	for(int i=0;i<MDIM*MDIM;i++) {
@@ -68,7 +61,7 @@ extern void printMatrix(TMatrix TMat) {
 	cout << endl;
 }
 
-extern TMatrix vquadmat(const float l, const float k, const float eini, const float eloss = 0., const float p_mass=MP, const float p_charge=QP) {
+extern TMatrix vquadmat(const float l, const float k, const float eloss = 0., const float p_mass=MP, const float p_charge=QP) {
 		// the length l is in [m]
 		// the strength k is in [1/m�] for quadrupoles
 		// eloss in [GeV]
@@ -78,8 +71,8 @@ extern TMatrix vquadmat(const float l, const float k, const float eini, const fl
                 //  ke -> ke * p_charge / QP <- if not a proton
                 //  ke = 0 if charge = 0, whatever the mass
                 
-	const double p0 = sqrt( (eini-MP)*(eini+MP) );
-	const double E  = eini - eloss;
+	const double p0 = sqrt( (BE-MP)*(BE+MP) );
+	const double E  = BE - eloss;
 	const double p  = sqrt( (E-p_mass)*(E+p_mass) );
 	const float ke = (p_charge==0) ? 0 : k* p0/p  *p_charge/QP;
 	if (ke==0) {
@@ -102,15 +95,15 @@ extern TMatrix vquadmat(const float l, const float k, const float eini, const fl
     return TMat;
 }
 
-extern TMatrix hquadmat(const float l, const float k, const float eini, const float eloss = 0., const float p_mass=MP, const float p_charge=QP) {
+extern TMatrix hquadmat(const float l, const float k, const float eloss = 0., const float p_mass=MP, const float p_charge=QP) {
 		// the length l is in [m]
 		// the strength k is in [1/m�] for quadrupoles
 		// ke is the modified field with respect to the eloss
                 //  k = e/p * dB/dx with p = mv (and m = MP)
                 //  k -> ke = k * p/ (p- dp) <- chromacity
                 //  ke -> ke *p_charge/QP <- if not a proton
-        const double p0 = sqrt( (eini-MP)*(eini+MP) );
-        const double E  = eini - eloss;
+        const double p0 = sqrt( (BE-MP)*(BE+MP) );
+        const double E  = BE - eloss;
         const double p  = sqrt( (E-p_mass)*(E+p_mass) );
         const float ke = (p_charge==0) ? 0 : fabs(k* p0/p)  *p_charge/QP;
 
@@ -133,7 +126,7 @@ extern TMatrix hquadmat(const float l, const float k, const float eini, const fl
     return TMat;
 }
 
-extern TMatrix rdipmat(const float l, const float k, const float eini, const float eloss = 0., const float p_mass=MP, const float p_charge=QP) {
+extern TMatrix rdipmat(const float l, const float k, const float eloss = 0., const float p_mass=MP, const float p_charge=QP) {
 		// the length l is in [m]
 		// the strength k is in [1/m] for dipoles
 		// ke is the modified field with respect to the eloss
@@ -141,8 +134,8 @@ extern TMatrix rdipmat(const float l, const float k, const float eini, const flo
                 //  k -> ke = k * p/ (p- dp) <- chromacity
                 //  ke -> ke * q_mass/QP <- if not a proton
 
-        const double p0 = sqrt( (eini-MP)*(eini+MP) );
-        const double E  = eini - eloss;
+        const double p0 = sqrt( (BE-MP)*(BE+MP) );
+        const double E  = BE - eloss;
         const double p  = sqrt( (E-p_mass)*(E+p_mass) );
         const float ke = (p_charge==0) ? 0 : k* p0/p  *p_charge/QP;
  
@@ -153,11 +146,11 @@ extern TMatrix rdipmat(const float l, const float k, const float eini, const flo
 	float r = radius(ke);
 	float * mat = new float[MDIM*MDIM];
 	float * efmat = new float[MDIM*MDIM];
-	double simp = r*2*sin(l/(2*r))*sin(l/(2*r))/eini;
+	double simp = r*2*sin(l/(2*r))*sin(l/(2*r))/BE;
 	double psy = ke*l/2.;
-	float tefmat[MDIM*MDIM] = {1., float(tan(psy))*ke, 0., 0., 0., 0.,
+	float tefmat[MDIM*MDIM] = {1., (float)(tan(psy)*ke), 0., 0., 0., 0.,
 	                            0., 1., 0., 0., 0., 0.,
-	                            0., 0., 1., -float(tan(psy))*ke, 0., 0.,
+	                            0., 0., 1., (float)(-tan(psy)*ke), 0., 0.,
 	                            0., 0., 0., 1., 0., 0.,
 	                            0., 0., 0., 0., 1., 0.,
 	                            0., 0., 0., 0., 0., 1. };
@@ -166,7 +159,7 @@ extern TMatrix rdipmat(const float l, const float k, const float eini, const flo
 	             	           r*sin(l/r),cos(l/r),0.,0., 0., 0.,
    		           	           0.,0.,1.,0., 0., 0.,
    	            	           0.,0.,l,1., 0., 0., 
-   	                        float(simp), sin(l/r)/eini, 0., 0., 1., 0.,
+   	                        (float)simp, (float)(sin(l/r)/BE), 0., 0., 1., 0.,
    	                        0., 0., 0., 0., 0., 1. };
 	for(int i=0;i<MDIM*MDIM;i++) { 
 		mat[i] = tmat[i];
@@ -189,7 +182,7 @@ extern TMatrix rdipmat(const float l, const float k, const float eini, const flo
     }
 }
 
-extern TMatrix sdipmat(const float l, const float k, const float eini, const float eloss = 0., const float p_mass=MP, const float p_charge=QP) {
+extern TMatrix sdipmat(const float l, const float k, const float eloss = 0., const float p_mass=MP, const float p_charge=QP) {
 		// the length l is in [m]
 		// the strength k is in [1/m] for dipoles
 		// ke is the modified field with respect to the eloss
@@ -197,8 +190,8 @@ extern TMatrix sdipmat(const float l, const float k, const float eini, const flo
                 //  k -> ke = k * p/ (p- dp) <- chromacity
                 //  ke -> ke * q_mass/QP <- if not a proton
                 
-        const double p0 = sqrt( (eini-MP)*(eini+MP) );
-        const double E  = eini - eloss;
+        const double p0 = sqrt( (BE-MP)*(BE+MP) );
+        const double E  = BE - eloss;
         const double p  = sqrt( (E-p_mass)*(E+p_mass) );
         const float ke = (p_charge==0) ? 0 : k* p0/p  *p_charge/QP;
 
@@ -210,12 +203,12 @@ extern TMatrix sdipmat(const float l, const float k, const float eini, const flo
 	float r = radius(ke);
   	float * mat = new float[MDIM*MDIM];
 
-	float simp = 2*r*sin(l/(2*r))*sin(l/(2*r))/eini;
+	float simp = 2*r*sin(l/(2*r))*sin(l/(2*r))/BE;
 	float tmat[MDIM*MDIM] =  {cos(l/r),(-1/r)*sin(l/r),0.,0., 0., 0.,
 		                      r*sin(l/r),cos(l/r),0.,0., 0., 0.,
 			                  0.,0.,1.,0., 0., 0.,
 			                  0.,0.,l,1., 0., 0.,
-			                  simp, sin(l/r)/eini, 0., 0., 1., 0.,
+			                  simp, (float)(sin(l/r)/BE), 0., 0., 1., 0.,
 			                  0., 0., 0., 0., 0., 1.
 				           };
 	if(!relative_energy) {
@@ -246,11 +239,11 @@ extern TMatrix driftmat(const float l) {
 }
 
 
-extern TMatrix hkickmat(const float l, const float k, const float eini, const float eloss =0., const float p_mass=MP, const float p_charge=QP) {
+extern TMatrix hkickmat(const float l, const float k, const float eloss =0., const float p_mass=MP, const float p_charge=QP) {
                 // the length l is in [m]
                 // the strength k is in [rad]
-        const double p0 = sqrt( (eini-MP)*(eini+MP) );
-        const double E  = eini - eloss;
+        const double p0 = sqrt( (BE-MP)*(BE+MP) );
+        const double E  = BE - eloss;
         const double p  = sqrt( (E-p_mass)*(E+p_mass) );
         const float ke = (p_charge==0) ? 0 : -k* p0/p  *p_charge/QP;
 
@@ -264,7 +257,7 @@ extern TMatrix hkickmat(const float l, const float k, const float eini, const fl
                            0.,0.,1.,0.,0.,0.,
                            0.,0.,l ,1.,0.,0.,
                            0.,0.,0.,0.,1.,0.,
-                           float(l*tan(ke)/2.),ke, 0., 0., 0., 1. 
+                           (float)(l*tan(ke)/2.),ke, 0., 0., 0., 1. 
 	};
 
 	for(int i=0;i<MDIM*MDIM;i++) { mat[i] = tmat[i]; }
@@ -273,11 +266,11 @@ extern TMatrix hkickmat(const float l, const float k, const float eini, const fl
 	return TMat;
 }
 
-extern TMatrix vkickmat(const float l, const float k, const float eini, const float eloss=0., const float p_mass=MP, const float p_charge=QP) {
+extern TMatrix vkickmat(const float l, const float k, const float eloss=0., const float p_mass=MP, const float p_charge=QP) {
                 // the length l is in [m]
                 // the strength k is in [rad]
-        const double p0 = sqrt( (eini-MP)*(eini+MP) );
-        const double E  = eini - eloss;
+        const double p0 = sqrt( (BE-MP)*(BE+MP) );
+        const double E  = BE - eloss;
         const double p  = sqrt( (E-p_mass)*(E+p_mass) );
         const float ke = (p_charge==0) ? 0 : -k* p0/p  *p_charge/QP;
 
@@ -291,7 +284,7 @@ extern TMatrix vkickmat(const float l, const float k, const float eini, const fl
                            0.,0.,1.,0.,0.,0.,
                            0.,0.,l ,1.,0.,0.,
                            0.,0.,0.,0.,1.,0.,
-                           0.,0.,float(l*tan(ke)/2.),ke, 0., 1. 
+                           0.,0.,(float)(l*tan(ke)/2.),ke, 0., 1. 
 	};
 
 	for(int i=0;i<MDIM*MDIM;i++) { mat[i] = tmat[i]; }

@@ -1,0 +1,13 @@
+H_Aperture.o: src//H_Aperture.cc include/H_Aperture.h
+H_BeamLineParser.o: src//H_BeamLineParser.cc include/H_BeamLineParser.h \
+ include/H_Parameters.h
+H_CircularAperture.o: src//H_CircularAperture.cc \
+ include/H_CircularAperture.h include/H_EllipticAperture.h \
+ include/H_Aperture.h
+H_EllipticAperture.o: src//H_EllipticAperture.cc include/H_Parameters.h \
+ include/H_Aperture.h include/H_EllipticAperture.h include/H_Aperture.h
+H_Parameters.o: src//H_Parameters.cc include/H_Parameters.h
+H_RectangularAperture.o: src//H_RectangularAperture.cc \
+ include/H_RectangularAperture.h include/H_Aperture.h
+H_RectEllipticAperture.o: src//H_RectEllipticAperture.cc \
+ include/H_RectEllipticAperture.h include/H_Aperture.h

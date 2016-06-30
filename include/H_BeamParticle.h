@@ -1,23 +1,16 @@
 #ifndef _H_BeamParticle_
 #define _H_BeamParticle_
 
-  /* * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                         *
-*                   --<--<--  A fast simulator --<--<--     *
-*                 / --<--<--     of particle   --<--<--     *
-*  ----HECTOR----<                                          *
-*                 \ -->-->-- transport through -->-->--     *
-*                   -->-->-- generic beamlines -->-->--     *
-*                                                           *
-* JINST 2:P09005 (2007)                                     *
-*      X Rouby, J de Favereau, K Piotrzkowski (CP3)         *
-*       http://www.fynu.ucl.ac.be/hector.html               *
-*                                                           *
-* Center for Cosmology, Particle Physics and Phenomenology  *
-*              Universite catholique de Louvain             *
-*                 Louvain-la-Neuve, Belgium                 *
- *                                                         *
-   * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*
+---- Hector the simulator ----
+   A fast simulator of particles through generic beamlines.
+   J. de Favereau, X. Rouby ~~~ hector_devel@cp3.phys.ucl.ac.be
+
+        http://www.fynu.ucl.ac.be/hector.html
+
+   Centre de Physique des Particules et de Phénoménologie (CP3)
+   Université Catholique de Louvain (UCL)
+*/
 
 /// \file H_BeamParticle.h
 /// \brief Class aiming at simulating a particle in the beamline
@@ -32,8 +25,8 @@
 // ROOT #includes
 #include "TMatrixD.h"
 #include "TVectorD.h"
-#include "TLorentzVector.h"
-#include "TRandom3.h"
+//#include "TPolyLine3D.h"
+#include "TRandom.h"
 
 // local #includes
 #include "H_Parameters.h"
@@ -42,17 +35,27 @@
 
 using namespace std;
 
+// local defines
+#define LENGTH_VEC 5
+#define INDEX_X 0
+#define INDEX_TX 1
+#define INDEX_Y 2
+#define INDEX_TY 3
+#define INDEX_S 4
+// (x,theta_x,y,theta_y,s)
+
 /// Defines a particle from the beam and its transport through the beamline
 class H_BeamParticle {
 
 	public:
+		void init();
 		/// Constructors and Destructor
 		//@{
 		H_BeamParticle();
 		H_BeamParticle(const H_BeamParticle&);
 		H_BeamParticle(const double, const double);
 		H_BeamParticle& operator=(const H_BeamParticle&);
-		~H_BeamParticle() {if(stop_position) delete stop_position; if(!stop_element) delete stop_element; positions.clear();}
+		~H_BeamParticle() {delete stop_position; if(!stop_element) delete stop_element; positions.clear(); return; }
 		//@}
 		/// Smears the (x,y) coordinates of the particle [\f$ \mu m \f$]
 		void smearPos(const double dx=SX,const double dy=SY, TRandom* r=gRandom);
@@ -66,8 +69,6 @@ class H_BeamParticle {
 		void setE(const double);
 		/// Sets the particle 4-momentum \f$ P^\mu \f$
 		void set4Momentum(const double, const double, const double, const double);	
-		/// Sets the particle 4-momentum \f$ P^\mu \f$
-		void set4Momentum(const TLorentzVector&);	
 		/// Clears H_BeamParticle::positions and sets the initial one.
 		void setPosition(const double , const double , const double , const double , const double );
 		/// Returns the particle mass [GeV]
@@ -97,7 +98,8 @@ class H_BeamParticle {
 	        /// As \f$ E^{2}_{\gamma} - (p_{1}-p_{2})^{2} \f$ could be numerically instable, we use here another form of this formula : <BR>
         	/// \f$ Q^{2}_{max} = -2 * \big( \frac{M_{p} E_{\gamma}}{p_{1}+p_{2}} \big) \big[ 1 + \frac{E^{2}_{1} + E^{2}_{2} - M^{2}_{p} }{ E_{1} E_{2} + p_{1} p_{2}} \big]    \f$
 		//@{
-		void emitGamma(const double gee, const double gq2, const double phimin=0, const double phimax=2*TMath::Pi());
+		void emitGamma(const double, const double, const double, const double);
+		void emitGamma(const double, const double);
 		//@}
                 /// uses Pythia to generate some inelastic pp->pX collision as background
 		void doInelastic();
@@ -109,7 +111,7 @@ class H_BeamParticle {
 		/// Propagates the particle accross the beamline until a given element
 		void propagate(const H_AbstractBeamLine *, const H_OpticalElement *);
 		/// Propagates the particle accross the beamline until a given element
-		void propagate(const H_AbstractBeamLine *, const string&);
+		void propagate(const H_AbstractBeamLine *, const string);
 		/// Propagates the particle until the end of the beamline
 		void propagate(const H_AbstractBeamLine *);
 		/// Returns the phase vector of the particle
@@ -117,7 +119,7 @@ class H_BeamParticle {
 		/// Returns the current phase vector of the particle (in H_BeamParticle::positions)
 		const TVectorD * getPosition(const int ) const;
 		/// Prints the properties of the particle
-		inline void printProperties() const {cout << *this; return;};
+		void printProperties() const;
 		/// Prints the phase vector of the particle
 		void printV() const;
 		/// Returns the element where the particle has been stopped
@@ -130,16 +132,19 @@ class H_BeamParticle {
 		/// Shows all the vectors \f$ (x, \theta_x, y, \theta_y ,s) \f$ in H_BeamParticle::positions
 		void showPositions() const; 
 		/// Returns the particle path in the beamline
-		TGraph * getPath(const int , const int ) const;
+		////TGraph * getPath(const int , const int ) const;
+		/// Draws the particle path in the beamline in 3D
+		////TPolyLine3D * getPath3D(const H_AbstractBeamLine *, const bool, const int, const int) const;
+		/// Computes the position of the particle at the end of each element of the beam, without non linear effects
+		void computePath(const H_AbstractBeamLine *);
 		/// Computes the position of the particle at the end of each element of the beam.
-		void computePath(const H_AbstractBeamLine * beam, const bool NonLinear=true);
+		void computePath(const H_AbstractBeamLine *, const bool);
 		/// Computes the position of the particle at the end of each element of the beam.
-		void computePath(const H_AbstractBeamLine & beam, const bool NonLinear=true);
+		void computePath(const H_AbstractBeamLine &, const bool);
 		/// Clears H_BeamParticle::positions but keeps the initial vector.
 		void resetPath();
 
 	private:
-		void init();
 		/// Particle mass [GeV]
 		double mp;
 		/// Particle charge [e]
@@ -170,7 +175,5 @@ class H_BeamParticle {
 		vector<TVectorD> positions; // vector (x,tx,y,ty,s) after each optical element of the beam ([m],[rad],[m],[rad],[m])
 		/// Adds a new vector (x,tx,y,ty,s) at the end of H_BeamParticle::positions
   		void addPosition(const double , const double , const double , const double , const double );
-
-	friend std::ostream& operator<< (std::ostream& os, const H_BeamParticle& p);
 };
 #endif
