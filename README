@@ -45,9 +45,9 @@ Note :
 
 ** Version 1.5.4 (30/06/2016)
 	Fixed a bug in the MadX output files parser preventing long beamlines
-	(>40 elements) to operate properly.
+	(>40 elements) to be manipulated properly.
 	Added the capability to leave multiple fields unretrieved in the parsing
-	of these MadX outputs
+	of these MadX outputs.
 	New features :
 		Added Pythia8 as an extra tool to generate single diffractive events
 		for their propagation into the beamline(s)
