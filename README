@@ -43,6 +43,15 @@ Note :
 		chcon -t textrel_shlib_t ./lib/libHector_routines.so
 ================================================================================
 
+** Version 1.5.4 (30/06/2016)
+	Fixed a bug in the MadX output files parser preventing long beamlines
+	(>40 elements) to operate properly.
+	Added the capability to leave multiple fields unretrieved in the parsing
+	of these MadX outputs
+	New features :
+		Added Pythia8 as an extra tool to generate single diffractive events
+		for their propagation into the beamline(s)
+
 ** Version 1.5.3 (08/05/2015)
 	Beam initial energy is now an argument to provide to the H_BeamLine
 	object (i.e. not hardcoded anymore, apart from its default value,
