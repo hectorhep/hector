@@ -68,7 +68,7 @@ enum {INDEX_X=0, INDEX_TX, INDEX_Y, INDEX_TY, INDEX_S, LENGTH_VEC};
 
 /// include Pythia libraries ? (not included on some ROOT installations)
 //#define _include_pythia_
-#define _include_pythia8_
+//#define _include_pythia8_
 
 const unsigned int TM = 0; // not used anymore. left for backward compatibility
 const unsigned int AM = 1; // not used anymore. left for backward compatibility
