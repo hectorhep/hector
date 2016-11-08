@@ -581,7 +581,7 @@ TGraph * H_AbstractBeamLine::getDY() const{
 
 TGraph * H_AbstractBeamLine::getRelX() const{
         const int N = elements.size();
-        float * s = new float[N], * r = new float[N]/*, temp*/;
+        float * s = new float[N], * r = new float[N];
         int i=0, n=N;
 
         vector<H_OpticalElement*>::const_iterator element_i;
@@ -607,7 +607,7 @@ TGraph * H_AbstractBeamLine::getRelX() const{
 
 TGraph * H_AbstractBeamLine::getRelY() const{
         const int N = elements.size();
-        float * s = new float[N], * r = new float[N]/*, temp*/;
+        float * s = new float[N], * r = new float[N];
         int i=0, n=N;
 
         vector<H_OpticalElement*>::const_iterator element_i;
