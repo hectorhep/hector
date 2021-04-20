@@ -28,7 +28,7 @@ VERSION=$(shell cat VERSION)
 # Warning : by default, the file extension for libraries is .so . However, for Cygwin (MS Windows systems) libraries are called .dll instead of .so . For compatibility, when running on cygwin, just change the LEXT variable value from "so" to "dll" (without the quote symbols).
 #
 # ----- Usage -----
-#  "make what" : prints the possibilities 
+#  "make what" : prints the possibilities
 #  "make all" or "make" or "make libHector.so": compile libHector library from the sources. (See LIBRARY and LEXT variables)
 #  "make clean" : deletes useless files
 #  "make depend" or "make Dependencies"  : creates the dependency list for this makefile. (See DEPENDENCIES variable) Called by "make all".
@@ -36,7 +36,7 @@ VERSION=$(shell cat VERSION)
 #  "make myfile.o" : if "myfile.cc" exists, it will build the object file "myfile.o".
 #  "make tar" : build the tarball of the sources
 #
-# In order to use the full power of "make", the list of prerequisites (the dependency files) should be included. 
+# In order to use the full power of "make", the list of prerequisites (the dependency files) should be included.
 # With this, "make" sees directly whether a file has to be reprocessed or not. This saves time for the compilation. To avoid any bug, the list of prerequistes is automatically created with "make depend". It is included by the line "-include $(DEPENDECIES)" here below. If the file does not exist when trying to include it, it will be created automatically.
 
 .PHONY: all clean cleanall debug depend what
@@ -51,7 +51,7 @@ SRC= src/
 INC= include/
 # LIB  depository for libHector
 LIB= lib/
-# ROUTINES contains the routine files .cpp 
+# ROUTINES contains the routine files .cpp
 ROUTINES= routines/
 ROUTINESOBJ= $(OBJ)
 ROUTINESSRC= $(ROUTINES)
@@ -64,18 +64,18 @@ VPATH = .:$(SRC):$(OBJ):$(INC):$(LIB):$(ROUTINES):$(ROUTINESOBJ):$(ROUTINESSRC):
 
 # ----- Library file extensions (dll or so) -----
 # for Cygwin, use LEXT= dll
-LEXT= .so 
+LEXT= .so
 
 # ----- Filename related variables -----
 # LIBRARY  final library name (See LIBFULLNAME and LEXT variables)
 LIBRARY= Hector
 ROUTINESLIBRARY= $(LIBRARY)_routines
 # LIBFULLNAME  Returns the full name of the library (e.g. libHector.so)
-LIBFULLNAME = $(addprefix lib,$(addsuffix $(LEXT),$(LIBRARY))) 
-ROUTINESLIBFULLNAME = $(addprefix lib,$(addsuffix $(LEXT),$(ROUTINESLIBRARY))) 
+LIBFULLNAME = $(addprefix lib,$(addsuffix $(LEXT),$(LIBRARY)))
+ROUTINESLIBFULLNAME = $(addprefix lib,$(addsuffix $(LEXT),$(ROUTINESLIBRARY)))
 # ROOTCFLAGS & ROOTLIBS  flags needed from ROOT for the compilation command
-ROOTCFLAGS= -fPIC $(shell root-config --cflags) 
-ROOTLIBS= $(shell root-config --libs --glibs) #-lEGPythia8 #-lPythia6 -lEG -lEGPythia6
+ROOTCFLAGS= -fPIC $(shell root-config --cflags)
+ROOTLIBS= $(shell root-config --libs) #-lEGPythia8 #-lPythia6 -lEG -lEGPythia6
 # HEADERS  List of .h files, without path
 HEADERS= $(notdir $(wildcard $(INC)*h))
 ROUTINESHEADERS = $(notdir $(wildcard $(ROUTINESINC)*h))
@@ -93,8 +93,8 @@ ROUTINESDEPENDENCIES= $(DEPENDENCIES)_routines
 TARBALL= $(LIBRARY)$(VERSION).tbz
 # WARNINGS  Warning flags for g++
 WARNINGS= -Wall -Wno-deprecated -Woverloaded-virtual -Wno-misleading-indentation
-# OPTIMIZE= -msse2 -mfpmath=sse -O3 
-OPTIMIZE= 
+# OPTIMIZE= -msse2 -mfpmath=sse -O3
+OPTIMIZE=
 #OPTIMIZE= -pg -g -fprofile-arcs -ftest-coverage
 
 
@@ -110,13 +110,13 @@ all: $(LIBFULLNAME)
 ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPENDENCIES)
 -include $(ROUTINESDEPENDENCIES)
-else 
+else
 ifneq ($(MAKECMDGOALS),depend)
 -include $(DEPENDENCIES)
 -include $(ROUTINESDEPENDENCIES)
 endif
 endif
-# Includes the dependencies for each object file. If the file $(DEPENDENCIES) does not exists, "make" creates it. 
+# Includes the dependencies for each object file. If the file $(DEPENDENCIES) does not exists, "make" creates it.
 # ifneq checks if you are not doing "make clean". If so, you do not need to build $(DEPENDENCIES) as you'll delete it just afterwards.
 # ifneq also checks if your are not doing "make depend", as you do not have to build twice the dependence file.
 
@@ -155,10 +155,10 @@ $(LIB):
 
 # ----- make libHector.so -----
 $(LIBFULLNAME): $(OBJECTS) | $(LIB)
-	@echo Making $@ 
+	@echo Making $@
 	@g++ -shared $(ROOTLIBS) $(WARNINGS) -o $@ -Wl,-soname,$@ $(addprefix $(OBJ),$(OBJECTS)) $(OPTIMIZE)
 	@strip -s $@
-	@mv -f $@ $(LIB) 
+	@mv -f $@ $(LIB)
 	@echo Done : `ls $(LIB)$@`
 	@echo
 
@@ -179,39 +179,39 @@ $(ROUTINESLIBFULLNAME): $(ROUTINESOBJECTS) $(LIBFULLNAME) $(ROUTINESSOURCESFULLN
 debug : $(OBJECTS)
 	@echo Making $(LIBFULLNAME) with debug information
 	@g++ -shared $(ROOTLIBS) $(WARNINGS) -o $(LIBFULLNAME) -Wl,-soname,$(LIBFULLNAME) $(addprefix $(OBJ),$(OBJECTS)) $(OPTIMIZE)
-	@mv -f $(LIBFULLNAME) $(LIB) 
+	@mv -f $(LIBFULLNAME) $(LIB)
 	@echo Done : `ls $(LIB)lib*`
 	@echo
 #@g++ -dynamiclib $(ROOTLIBS) $(WARNINGS) -o $@ $(addprefix $(OBJ),$(OBJECTS)) $(OPTIMIZE)
 
 # ----- make depend -----
-$(DEPENDENCIES) depend : $(HEADERS) $(SOURCES) 
-	@echo Making the dependency file : $(DEPENDENCIES) 
-	@g++ -MM $(ROOTCFLAGS) $(SRC)/H_*.cc $(WARNINGS) -I$(INC) -I$(ROOTSYS)/include > $(DEPENDENCIES) 
+$(DEPENDENCIES) depend : $(HEADERS) $(SOURCES)
+	@echo Making the dependency file : $(DEPENDENCIES)
+	@g++ -MM $(ROOTCFLAGS) $(SRC)/H_*.cc $(WARNINGS) -I$(INC) -I$(ROOTSYS)/include > $(DEPENDENCIES)
 
 $(ROUTINESDEPENDENCIES) : $(ROUTINESHEADERS) $(HEADERS)
-	@echo Making the dependency file : $(ROUTINESDEPENDENCIES) 
+	@echo Making the dependency file : $(ROUTINESDEPENDENCIES)
 	@echo $(ROUTINESSOURCESFULLNAME)
-	@g++ -MM $(ROOTCFLAGS) $(ROUTINESSOURCESFULLNAME) $(WARNINGS) -I$(INC) -I$(ROUTINESINC) -I$(ROOTSYS)/include > $(ROUTINESDEPENDENCIES) 
+	@g++ -MM $(ROOTCFLAGS) $(ROUTINESSOURCESFULLNAME) $(WARNINGS) -I$(INC) -I$(ROUTINESINC) -I$(ROOTSYS)/include > $(ROUTINESDEPENDENCIES)
 #Creates the file $(DEPENDENCIES)
 #"g++ -MM " produces the same output as "makedepend" but with the $@.cc file added to the list, which is needed here
 
 # ----- make clean -----
 clean:
 	@echo Deleting object and temporary files
-	@-rm -f *.d *~ core $(OBJ)*.o Doxywarn.txt $(DEPENDENCIES) $(ROUTINESDEPENDENCIES) 
+	@-rm -f *.d *~ core $(OBJ)*.o Doxywarn.txt $(DEPENDENCIES) $(ROUTINESDEPENDENCIES)
 # the dash "-" in front avoids an warning if $(DEPENDENCIES) does not exist
 
 cleanall: clean
 	@-rm -f ./H_* $(ROUTINES)/H_*.so $(LIB)$(ROUTINESLIBFULLNAME) $(LIB)$(LIBFULLNAME)
-	@-rm -f chromaticity_grid_*.txt gmon.out doxywarn.txt RP_acceptance_* m7000.txt $(LIBFULLNAME) output.valgrind 
+	@-rm -f chromaticity_grid_*.txt gmon.out doxywarn.txt RP_acceptance_* m7000.txt $(LIBFULLNAME) output.valgrind
 	@-rm -f *.gcov *.gcda *.gcno
 	@echo
 
 distclean: cleanall
-	
+
 # ----- make tar -----
-$(TARBALL) tar : Makefile README rootlogon.C VERSION $(HEADERS) $(SOURCES) $(notdir $(wildcard $(ROUTINES)H_*cpp)) 
+$(TARBALL) tar : Makefile README rootlogon.C VERSION $(HEADERS) $(SOURCES) $(notdir $(wildcard $(ROUTINES)H_*cpp))
 	@echo Building tarball of sources
 	@mkdir $(LIBRARY)
 	@cp Makefile README rootlogon.C VERSION $(LIBRARY)/
